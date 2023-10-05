@@ -1,0 +1,34 @@
+import { StyledEngineProvider, ThemeProvider } from '@mui/material';
+import './App.css';
+import {theme} from './Theme'
+import Router from './routes';
+import { SnackbarProvider } from 'notistack';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
+
+
+
+function App() {
+  
+
+  return (
+    <div>
+      <ThemeProvider theme={theme}>
+        <StyledEngineProvider injectFirst>
+          <SnackbarProvider
+           autoHideDuration={3000}
+           anchorOrigin={{
+             vertical: 'bottom',
+             horizontal: 'right'
+           }}
+          >
+            <ErrorBoundary>
+            <Router /> 
+            </ErrorBoundary>
+          </SnackbarProvider>
+        </StyledEngineProvider>
+      </ThemeProvider>
+    </div>
+  );
+}
+
+export default App;
