@@ -7,6 +7,7 @@ import SignUp from "./views/SignUp";
 import AdminLogin from "./views/Admin/Auth/AdminLogin";
 import ErrorPage from "./components/ErrorBoundary/components/ErrorPage";
 import AdminDashboard from "./layouts/Dashboard/AdminDashboard";
+import OTP from "./views/OTP";
 
 export default function Router() {
     let element = useRoutes([
@@ -16,6 +17,8 @@ export default function Router() {
     //    },
        { path: '/', element: <Login />},
        { path: '/signup' , element: <SignUp /> },
+       { path: '/verify-otp' , element: <OTP /> },
+
        {
         path: 'admin',
         element: <AdminDashboard />,
