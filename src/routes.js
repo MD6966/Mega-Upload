@@ -8,6 +8,7 @@ import AdminLogin from "./views/Admin/Auth/AdminLogin";
 import ErrorPage from "./components/ErrorBoundary/components/ErrorPage";
 import AdminDashboard from "./layouts/Dashboard/AdminDashboard";
 import OTP from "./views/OTP";
+import HomePage from "./views/HomePage";
 
 export default function Router() {
     let element = useRoutes([
@@ -19,26 +20,28 @@ export default function Router() {
        { path: '/signup' , element: <SignUp /> },
        { path: '/verify-otp' , element: <OTP /> },
 
-       {
-        path: 'admin',
-        element: <AdminDashboard />,
-        children: [
-        ]
-    },
-       {
-        path:'auth',
-        element: <AuthLayout />, 
-        children : [
-        ]
-       },
-       {
-        path:'/home',
-        element: <Home />,
-       },
-       {
-        path:'/admin-login',
-        element: <AdminLogin /> 
-       },
+       {path:'/home', element:<HomePage />},
+
+    //    {
+    //     path: 'admin',
+    //     element: <AdminDashboard />,
+    //     children: [
+    //     ]
+    // },
+    //    {
+    //     path:'auth',
+    //     element: <AuthLayout />, 
+    //     children : [
+    //     ]
+    //    },
+    //    {
+    //     path:'/home',
+    //     element: <Home />,
+    //    },
+    //    {
+    //     path:'/admin-login',
+    //     element: <AdminLogin /> 
+    //    },
        {
         path:'*',
         element: <ErrorPage /> 

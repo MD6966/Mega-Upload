@@ -1,8 +1,7 @@
 import { Button, TextField } from '@mui/material';
 import React, { useRef, useState } from 'react';
 import { Box, AppBar, Toolbar, styled, Typography, Stack } from '@mui/material';
-import { Link } from 'react-router-dom';
-
+import Page from '../components/page/page';
 const StyledRoot = styled('div')(({ theme }) => ({
   height: '100vh',
   display: 'flex',
@@ -37,10 +36,11 @@ const OTP = () => {
   };
 
   return (
+    <Page title="OTP">
     <StyledRoot>
       <Stack>
         <Typography variant="h4" sx={{ textAlign: 'center', fontWeight: 'bold' }}>
-          Please enter One-Time-Password to verify your account
+            Please enter One-Time-Password to verify your account
         </Typography>
         <Typography sx={{ textAlign: 'center', mb: '1rem' }}>
           One-Time-Password has been sent to your email
@@ -54,11 +54,11 @@ const OTP = () => {
                   inputRef={ref}
                   onChange={(e) => handleInputChange(e, index)}
                   onKeyDown={(e) => handleKeyDown(e, index)}
-                  variant="outlined"
+                  variant="standard"
                   margin="normal"
                   fullWidth
                   type="text"
-                  inputProps={{ maxLength: 1 }}
+                  inputProps={{ maxLength: 1, style: { textAlign: 'center' } }}
                   style={{ textAlign: 'center', width: '50px' }}
                 />
               </div>
@@ -75,6 +75,7 @@ const OTP = () => {
         </form>
       </Stack>
     </StyledRoot>
+            </Page>
   );
 };
 

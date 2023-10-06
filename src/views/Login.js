@@ -88,13 +88,13 @@ const Login = () => {
             label="Password"
           />
         </FormControl>
-          <Typography sx={{mt:1, textAlign:'right',fontSize:'14px', mr:1, cursor:'pointer'}}
+          <Typography sx={{mt:1, float:'right',fontSize:'14px', mr:1, cursor:'pointer'}}
           onClick={()=>setOpen(true)}
           >
             Forgot Password?
           </Typography>
           <Box sx={{p:2, }}>
-              <Button variant='contained' fullWidth sx={{background:'#ff5a6e'}} type='submit'>
+              <Button variant='contained' fullWidth sx={{background:'#ff5a6e', mt:2}} type='submit'>
                 Login
               </Button>
           </Box>
