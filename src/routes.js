@@ -11,6 +11,7 @@ import OTP from "./views/OTP";
 import HomePage from "./views/HomePage";
 import { useSelector } from "react-redux";
 import ProtectedRoutes from './components/ProtectedRoutes/ProtectedRoutes'
+import ResetPassword from "./views/ResetPassword";
 export default function Router() {
     const isAuthenticated = useSelector((state)=>state.auth.isAuthenticated)
     // console.log(isAuthenticated)
@@ -22,6 +23,8 @@ export default function Router() {
        { path: '/', element: <Login />},
        { path: '/signup' , element: <SignUp /> },
        { path: '/verify-otp/:id' , element: <OTP /> },
+       { path: '/reset/:token' , element: <ResetPassword /> },
+
        {
         element: <ProtectedRoutes isLogged={isAuthenticated} />,
         children:[

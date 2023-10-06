@@ -1,4 +1,4 @@
-import { Box, Grid, TextField, styled, FormControl,InputLabel,OutlinedInput,InputAdornment,IconButton, Typography, Button, FormControlLabel, Checkbox, FormHelperText } from '@mui/material'
+import { Box, Grid, TextField, styled, FormControl,InputLabel,OutlinedInput,InputAdornment,IconButton, Typography, Button, FormControlLabel, Checkbox, FormHelperText, useTheme } from '@mui/material'
 import React from 'react'
 import Page from '../components/page/page'
 import Nav from '../components/AppBar/Header'
@@ -35,6 +35,7 @@ const SignUp = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const {enqueueSnackbar} = useSnackbar()
+  const theme = useTheme()
   const handleChangeCheck = (event) => {
     setChecked(event.target.checked);
   };
@@ -94,7 +95,14 @@ const SignUp = () => {
       <StyledRoot>
         <Box>
 
-        <Typography variant='h3' textAlign="center" fontWeight="bold">
+        <Typography variant='h3' textAlign="center" fontWeight="bold"
+        sx={{
+          [theme.breakpoints.down('sm')]:
+          {
+            fontSize:'35px'
+          }
+        }}
+        >
           Register Now
         </Typography>
         <Grid container>
@@ -186,6 +194,9 @@ const SignUp = () => {
             </Box>
           </Grid>
           <Grid item
+          sx={{[theme.breakpoints.down('md')]:{
+            display:'none'
+          }}}
           xs={12}
           md={6}
           lg={6}

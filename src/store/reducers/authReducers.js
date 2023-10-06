@@ -11,7 +11,16 @@ const authReducer = (state=initialState, action) => {
             return {
                 ...state,
                 ...action.payload.data,
-                token: action.payload.data.access_token,
+                token: action.payload.data.token,
+                isAuthenticated: true
+            };
+        };
+        case 'VERIFY_OTP': {
+            localStorage.setItem('token', action.payload.data.token);
+            return {
+                ...state,
+                ...action.payload.data,
+                token: action.payload.data.token,
                 isAuthenticated: true
             };
         };

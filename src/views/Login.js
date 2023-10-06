@@ -1,5 +1,5 @@
 import { FormControl, InputLabel, Button, Box, Grid, Hidden, 
-  Typography, TextField, Divider, InputAdornment,IconButton, Dialog, DialogTitle, DialogContent, DialogActions  } from '@mui/material';
+  Typography, TextField, Divider, InputAdornment,IconButton, Dialog, DialogTitle, DialogContent, DialogActions, useTheme, styled  } from '@mui/material';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -8,10 +8,18 @@ import { useSelector, useDispatch } from 'react-redux';
 import './App.css'
 import Page from '../components/page/page';
 import Nav from '../components/AppBar/Header'
-import { login } from '../store/actions/authActions';
+import { forgotPassword, login } from '../store/actions/authActions';
 import { useNavigate } from 'react-router';
 import {HashLoader} from "react-spinners";
-
+import { useSnackbar } from 'notistack';
+const Image = styled('img')(({theme})=>({
+    [theme.breakpoints.down('md')]: {
+      height:'50px'
+    },
+    [theme.breakpoints.down('sm')]: {
+      height:'40px'
+    }
+}))
 const initialValues = {
   email:'',
   password:'',
@@ -21,8 +29,10 @@ const Login = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [formValues, setFormValues] = React.useState(initialValues)
   const [loading, setLoading] = React.useState(false)
+  const [emailLoading, setEmailLoading] = React.useState(false)
   const [open, setOpen] = React.useState(false)
   const [email, setEmail] = React.useState('')
+  const {enqueueSnackbar} = useSnackbar()
   const navigate = useNavigate()
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -49,7 +59,9 @@ const Login = () => {
       // }
     }).catch((err) => {
       setLoading(false)
-      console.log(err)
+      enqueueSnackbar(err.response.data.message, {
+        variant:'error'
+      })
     });
     console.log(formValues)
   }
@@ -57,8 +69,23 @@ const Login = () => {
     setEmail(e.target.value)
   }
   const handleSubmitEmail = (e) => {
+    setEmailLoading(true)
     e.preventDefault()
+    dispatch(forgotPassword(email)).then((result) => {
+      setEmailLoading(false)
+      enqueueSnackbar(result.data.message, {
+        variant:'success'
+      })
+      setEmail('')
+      setOpen(false)
+    }).catch((err) => {
+      setEmailLoading(false)
+      enqueueSnackbar(err.response.data.data.email[0], {
+        variant:'error'
+      })
+    });
   }
+  const theme = useTheme()
   return (<Page
   title="Login"
   >
@@ -70,14 +97,14 @@ const Login = () => {
      <Grid container>
       <Grid item
       className="Grid1"
-      xs={6}
-      sm={6}
+      xs={12}
+      sm={12}
       md={6}
       lg={6}
       xl={6} >
         <Box sx={{display:'flex', justifyContent:'center', p:5}}>
           <Box>
-          <img src="/assets/images/logo-dark.png"/>
+          <Image src="/assets/images/logo-dark.png"/>
           </Box>
         </Box>
         <Box style={{padding: '0px 10px'}}>
@@ -139,18 +166,26 @@ const Login = () => {
           </form>
         </Box>
       </Grid>
-      <Hidden smDown>
       <Grid item
       className="Grid2"
-      xs={6}
-      sm={6}
+      sx={{
+        [theme.breakpoints.down('md')]: {
+          display:'none'
+        }
+      }}
+      xs={12}
+      sm={12}
       md={6}
       lg={6}
       xl={6} >
         <Box className="box">
           <Box sx={{mt:'30%'}}>
+          
           <Typography sx={{fontSize:'3rem', textAlign:'center', fontWeight:'bold', color:'#fff'}}>Login</Typography>
-        <Typography style={{color:'#ffffff', fontSize:'1.25rem',}}>Hello!. Glad to see you again </Typography> 
+        <Box sx={{p:2}}>
+        <Typography style={{color:'#ffffff', fontSize:'1.05rem',
+      }}>Hello!. Glad to see you again </Typography> 
+        </Box>
         <Box>
           <Divider sx={{mt:1, borderColor:'#fff'}}/>
           <Box sx={{display:'flex', alignItems:'center', justifyContent:'center'}}>
@@ -174,7 +209,6 @@ const Login = () => {
           </Box>
         </Box>
       </Grid>
-      </Hidden>
      </Grid>
       </Box>
        </Box>  
@@ -207,11 +241,24 @@ const Login = () => {
           >
             Cancel
           </Button>
+          {
+            emailLoading ? 
+            <Button variant='disabled'>
+            <HashLoader
+            color="#353B48"
+            loading={emailLoading}
+            size={30}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+            />
+            </Button>
+      :
           <Button variant='contained'
           type='submit'
           >
             Send
           </Button>
+          }
         </DialogActions>
             </form>
        </Dialog>

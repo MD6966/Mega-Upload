@@ -2,9 +2,9 @@ import { Button, TextField } from '@mui/material';
 import React, { useRef, useState } from 'react';
 import { Box, AppBar, Toolbar, styled, Typography, Stack } from '@mui/material';
 import Page from '../components/page/page';
-import {useParams } from 'react-router';
+import {useNavigate, useParams } from 'react-router';
 import { useDispatch } from 'react-redux';
-import { verifyOTP } from '../store/actions/authActions';
+import { resendOTP, verifyOTP } from '../store/actions/authActions';
 import { useSnackbar } from 'notistack';
 import { HashLoader } from 'react-spinners';
 const StyledRoot = styled('div')(({ theme }) => ({
@@ -21,7 +21,10 @@ const OTP = () => {
   const [otpValue, setOTPValue] = useState('');
   const [loading, setLoading] = React.useState(false)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const {enqueueSnackbar} = useSnackbar()
+  const [resendDisabled, setResendDisabled] = useState(false);
+  const [remainingTime, setRemainingTime] = useState(0);
   const handleInputChange = (e, index) => {
     const value = e.target.value;
     if (value.length === 1) {
@@ -38,22 +41,62 @@ const OTP = () => {
       inputRefs[index - 1].current.focus();
     }
   };
-
   const handleValidate = (e) => {
-    setLoading(true)
-    e.preventDefault()
-    dispatch(verifyOTP(id,otpValue)).then((result) => {
-      console.log(result)
-      setLoading(false)
-    }).catch((err) => {
-      // alert(err.response.data.message)
-      setLoading(false)
-      enqueueSnackbar(err.response.data.message, {
-        variant:'error'
+    setLoading(true);
+    e.preventDefault();
+    dispatch(verifyOTP(id, otpValue))
+      .then((result) => {
+        enqueueSnackbar(result.data.message, {
+          variant:'success'
+        });
+        navigate('/home', {replace:true})
+        setLoading(false);
       })
-    });
-    // console.log('Complete OTP:', otpValue);
+      .catch((err) => {
+        setLoading(false);
+        enqueueSnackbar(err.response.data.message, {
+          variant: 'error',
+        });
+  
+        setOTPValue('');
+  
+        const emptyRefs = Array(inputRefs.length).fill('');
+        inputRefs.forEach((ref, index) => {
+          ref.current.value = emptyRefs[index];
+        });
+      });
   };
+  
+
+  const handleResendOTP = () => {
+    setResendDisabled(true);
+    setRemainingTime(60);
+
+    const timerId = setTimeout(() => {
+      setResendDisabled(false);
+      setRemainingTime(0);
+    }, 60000);
+
+    dispatch(resendOTP(id)).then((result) => {
+      enqueueSnackbar(result.data.message, {
+        variant: 'success',
+      });
+    }).catch((err) => {
+      console.log(err);
+    });
+  };
+
+  React.useEffect(() => {
+    if (remainingTime > 0) {
+      const timer = setInterval(() => {
+        setRemainingTime((prevTime) => prevTime - 1);
+      }, 1000);
+
+      return () => {
+        clearInterval(timer);
+      };
+    }
+  }, [remainingTime]);
 
   return (
     <Page title="OTP">
@@ -103,9 +146,23 @@ const OTP = () => {
             </Button>
             }
           </Box>
-          <Typography textAlign="center" sx={{ mt: 2, fontWeight: 'bold', cursor: 'pointer' }}>
-            Resend One-Time-Password
-          </Typography>
+          {
+            resendDisabled ? <Typography
+            textAlign="center"
+            sx={{ mt: 2, fontWeight: 'bold', cursor: 'pointer',userSelect: 'none' }}
+            >
+              Resend after: 00:{remainingTime}
+            </Typography>
+            :
+
+          <Typography
+      textAlign="center"
+      sx={{ mt: 2, fontWeight: 'bold', cursor: 'pointer',userSelect: 'none' }}
+      onClick={handleResendOTP}
+    >
+   Resend One-Time-Password
+    </Typography>
+          }
         </form>
       </Stack>
     </StyledRoot>

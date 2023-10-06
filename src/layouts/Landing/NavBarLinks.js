@@ -11,9 +11,22 @@ const StyledLogin = styled(Button)(({theme})=>({
   letterSpacing:1,
   width:'90px',
   height:'38px',
+  [theme.breakpoints.down('md')]: {
+    width:'60px',
+    fontSize:'10px',
+    height:'30px'
+  },
+  [theme.breakpoints.down('sm')]: {
+    width:'30px',
+    fontSize:'8px',
+    height:'25px',
+    marginLeft:0
+  },
+  
   '&:hover': {
     background:theme.palette.secondary.main
   }
+  
 }))
 const StyledSignUp = styled(Button)(({theme})=>({
   marginLeft:'1rem',
@@ -24,6 +37,18 @@ const StyledSignUp = styled(Button)(({theme})=>({
   letterSpacing:1,
   width:'90px',
   height:'38px',
+  [theme.breakpoints.down('md')]: {
+    width:'60px',
+    fontSize:'10px',
+    height:'30px'
+  },
+  [theme.breakpoints.down('sm')]: {
+    width:'30px',
+    fontSize:'8px',
+    height:'25px',
+    marginLeft:5
+
+  },
   '&:hover': {
     background:'#fff'
   }
@@ -32,6 +57,15 @@ const NavBarLinks = () => {
   const theme = useTheme()
   return (
     <div>
+      <Box sx={{display:'flex'}}>
+      <Box
+      sx={{
+        [theme.breakpoints.down('md')]: {
+          display:'none'
+        }
+      }}
+      >
+
       <Button sx={{
         color:'#fff',
         fontWeight:'bold',
@@ -52,6 +86,9 @@ const NavBarLinks = () => {
       }}>
         Proof Of Payments
       </Button>
+      </Box>
+      <Box>
+
           <StyledLogin variant='contained'
           component={Link}
           to="/"
@@ -64,6 +101,8 @@ const NavBarLinks = () => {
           >
             Sign Up
           </StyledSignUp>
+            </Box>
+          </Box>
     </div>
   )
 }

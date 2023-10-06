@@ -1,13 +1,28 @@
-import { AppBar, Toolbar, Box } from '@mui/material'
+import { AppBar, Toolbar, Box, useThemeProps, useTheme, styled } from '@mui/material'
 import React from 'react'
 import NavBarLinks from '../../layouts/Landing/NavBarLinks'
 
+const Image = styled('img')(({theme})=> ({
+  height:'50px',
+  [theme.breakpoints.down('md')]: {
+    height:'30px'
+  },
+  [theme.breakpoints.down('sm')]: {
+    height:'20px'
+  }
+}))
 const Header = () => {
+  const theme=useTheme()
   return (
     <div>
-      <AppBar position='static' sx={{pl:5, pr:5}}>
+      <AppBar position='static' sx={{
+        [theme.breakpoints.up('md')]: {
+          pl:5, pr:5
+        }
+      
+      }}>
         <Toolbar>
-            <img src="/assets/images/logo.png" style={{height:'50px'}}/>
+            <Image src="/assets/images/logo.png" />
             <Box style={{marginLeft:'auto'}}>
             <NavBarLinks  /> 
             </Box>
