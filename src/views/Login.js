@@ -8,15 +8,22 @@ import { useSelector, useDispatch } from 'react-redux';
 import './App.css'
 import Page from '../components/page/page';
 import Nav from '../components/AppBar/Header'
+import { login } from '../store/actions/authActions';
+import { useNavigate } from 'react-router';
+import {HashLoader} from "react-spinners";
+
 const initialValues = {
   email:'',
-  password:''
+  password:'',
+  role:'user'
 }
 const Login = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [formValues, setFormValues] = React.useState(initialValues)
+  const [loading, setLoading] = React.useState(false)
   const [open, setOpen] = React.useState(false)
   const [email, setEmail] = React.useState('')
+  const navigate = useNavigate()
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (event) => {
@@ -28,7 +35,22 @@ const Login = () => {
     setFormValues({...formValues, [name]:value })
   }
   const handleSubmit = (e) => {
+    setLoading(true)
     e.preventDefault()
+    dispatch(login(formValues)).then((result) => {
+      if(result.data.data.user.email_verified_at == null){
+        navigate(`/verify-otp/${result.data.data.user.id}`)
+      }
+      else {
+        navigate('/home')
+      }
+      setLoading(false)
+      // if(result.status == 200){
+      // }
+    }).catch((err) => {
+      setLoading(false)
+      console.log(err)
+    });
     console.log(formValues)
   }
   const handleChangeEmail = (e) => {
@@ -94,9 +116,23 @@ const Login = () => {
             Forgot Password?
           </Typography>
           <Box sx={{p:2, }}>
-              <Button variant='contained' fullWidth sx={{background:'#ff5a6e', mt:2}} type='submit'>
-                Login
+            {
+              loading ? 
+              <Button variant='disbaled' fullWidth sx={{mt:2}}>
+                <HashLoader
+              color="#353B48"
+              loading={loading}
+              size={30}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+        />
               </Button>
+              :
+              <Button variant='contained' fullWidth sx={{background:'#ff5a6e', mt:2}} type='submit'>
+              Login
+            </Button>
+             
+      }
           </Box>
             
 

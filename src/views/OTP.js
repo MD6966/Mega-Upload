@@ -2,6 +2,11 @@ import { Button, TextField } from '@mui/material';
 import React, { useRef, useState } from 'react';
 import { Box, AppBar, Toolbar, styled, Typography, Stack } from '@mui/material';
 import Page from '../components/page/page';
+import {useParams } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { verifyOTP } from '../store/actions/authActions';
+import { useSnackbar } from 'notistack';
+import { HashLoader } from 'react-spinners';
 const StyledRoot = styled('div')(({ theme }) => ({
   height: '100vh',
   display: 'flex',
@@ -10,9 +15,13 @@ const StyledRoot = styled('div')(({ theme }) => ({
 }));
 
 const OTP = () => {
+  const {id} = useParams()
+  // console.log(id)
   const inputRefs = [useRef(), useRef(), useRef(), useRef(), useRef(), useRef()];
   const [otpValue, setOTPValue] = useState('');
-
+  const [loading, setLoading] = React.useState(false)
+  const dispatch = useDispatch()
+  const {enqueueSnackbar} = useSnackbar()
   const handleInputChange = (e, index) => {
     const value = e.target.value;
     if (value.length === 1) {
@@ -31,8 +40,19 @@ const OTP = () => {
   };
 
   const handleValidate = (e) => {
+    setLoading(true)
     e.preventDefault()
-    console.log('Complete OTP:', otpValue);
+    dispatch(verifyOTP(id,otpValue)).then((result) => {
+      console.log(result)
+      setLoading(false)
+    }).catch((err) => {
+      // alert(err.response.data.message)
+      setLoading(false)
+      enqueueSnackbar(err.response.data.message, {
+        variant:'error'
+      })
+    });
+    // console.log('Complete OTP:', otpValue);
   };
 
   return (
@@ -65,9 +85,23 @@ const OTP = () => {
             ))}
           </div>
           <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
+            {
+              loading? 
+              <Button variant='disabled' sx={{ height: '50px', width: '150px' }}>
+               <HashLoader
+              color="#353B48"
+              loading={loading}
+              size={30}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+        />
+            </Button>
+              :
+
             <Button variant='contained' sx={{ height: '50px', width: '150px' }} type='submit'>
               Validate
             </Button>
+            }
           </Box>
           <Typography textAlign="center" sx={{ mt: 2, fontWeight: 'bold', cursor: 'pointer' }}>
             Resend One-Time-Password

@@ -9,8 +9,11 @@ import ErrorPage from "./components/ErrorBoundary/components/ErrorPage";
 import AdminDashboard from "./layouts/Dashboard/AdminDashboard";
 import OTP from "./views/OTP";
 import HomePage from "./views/HomePage";
-
+import { useSelector } from "react-redux";
+import ProtectedRoutes from './components/ProtectedRoutes/ProtectedRoutes'
 export default function Router() {
+    const isAuthenticated = useSelector((state)=>state.auth.isAuthenticated)
+    // console.log(isAuthenticated)
     let element = useRoutes([
     //     {
     //     path:'/',
@@ -18,9 +21,14 @@ export default function Router() {
     //    },
        { path: '/', element: <Login />},
        { path: '/signup' , element: <SignUp /> },
-       { path: '/verify-otp' , element: <OTP /> },
+       { path: '/verify-otp/:id' , element: <OTP /> },
+       {
+        element: <ProtectedRoutes isLogged={isAuthenticated} />,
+        children:[
+            {path:'/home', element:<HomePage />},
+        ]
+       },
 
-       {path:'/home', element:<HomePage />},
 
     //    {
     //     path: 'admin',

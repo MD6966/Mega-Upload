@@ -1,4 +1,4 @@
-import { Box, Grid, TextField, styled, FormControl,InputLabel,OutlinedInput,InputAdornment,IconButton, Typography, Button, FormControlLabel, Checkbox } from '@mui/material'
+import { Box, Grid, TextField, styled, FormControl,InputLabel,OutlinedInput,InputAdornment,IconButton, Typography, Button, FormControlLabel, Checkbox, FormHelperText } from '@mui/material'
 import React from 'react'
 import Page from '../components/page/page'
 import Nav from '../components/AppBar/Header'
@@ -7,6 +7,10 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import formAnimation from './form.json'
 import Lottie from 'react-lottie'
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { registerUser } from '../store/actions/authActions';
+import { useSnackbar } from 'notistack';
+import {HashLoader} from "react-spinners";
 
 const StyledRoot = styled(Box)(({theme})=>({
   minHeight:'100vh',
@@ -18,24 +22,55 @@ const StyledRoot = styled(Box)(({theme})=>({
 const initialValues = {
   name:'',
   email:'',
-  password:''
+  password:'',
+  role:'user'
 }
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = React.useState(false);
+  const [passwordError, setPasswordError] = React.useState('')
   const [formValues, setFormValues] = React.useState(initialValues)
   const [checked, setChecked] = React.useState(false)
+  const [loading , setLoading] = React.useState(false)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const {enqueueSnackbar} = useSnackbar()
   const handleChangeCheck = (event) => {
     setChecked(event.target.checked);
   };
-  const handleChange =(e) => {
-    const {name,value} = e.target
-    setFormValues({...formValues, [name]:value })
-  }
+ 
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+      if (name === 'password' && value.length < 8) {
+        setPasswordError('Password must be at least 8 characters long');
+        setFormValues({ ...formValues, [name]: value });
+
+      } else {
+        setPasswordError('');
+        setFormValues({ ...formValues, [name]: value });
+      }
+    };
+
   const handleSubmit = (e) => {
+    setLoading(true)
     e.preventDefault()
-    navigate('/verify-otp')
+    dispatch(registerUser(formValues)).then((result) => {
+      setLoading(false)
+      setFormValues(initialValues)
+      setChecked(false)
+      // console.log(result.data.data.id)
+      enqueueSnackbar(result.data.message, {
+        variant:'success'
+      })
+      navigate(`/verify-otp/${result.data.data.user.id}`, {replace:true})
+    }).catch((err) => {
+      setLoading(false)
+      // console.log(err.response.data.data.email[0])
+      enqueueSnackbar(err.response.data.data.email[0], {
+        variant : "error"
+      })
+    });
+    // navigate('/verify-otp')
     console.log(formValues)
   }
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -99,6 +134,7 @@ const SignUp = () => {
             }
             label="Password"
           />
+           <FormHelperText sx={{color:'red'}}>{passwordError}</FormHelperText>
         </FormControl>
         <FormControlLabel control={<Checkbox  checked={checked}
   onChange={handleChangeCheck}/>} label={
@@ -112,9 +148,40 @@ const SignUp = () => {
             of this site.
           </Typography>
         }/>
-              <Button variant={checked ? 'contained' : 'disabled'} fullWidth sx={{height:'40px', mt:2}} type='submit'>
-                Register
-              </Button>
+        {
+  passwordError ? (
+    <Button disabled fullWidth sx={{ height: '40px', mt: 2 }}>
+      Register
+    </Button>
+  ) : (
+    loading ? (
+      <Button
+      variant="disabled"
+      fullWidth
+      sx={{ height: '40px', mt: 2 }}
+    >
+       <HashLoader
+        color="#353B48"
+        loading={loading}
+        size={30}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+      />
+    </Button>
+     
+    ) : (
+      <Button
+        variant={checked ? 'contained' : 'disabled'}
+        fullWidth
+        sx={{ height: '40px', mt: 2 }}
+        type="submit"
+      >
+        Register
+      </Button>
+    )
+  )
+}
+             
           </form>
             </Box>
           </Grid>
