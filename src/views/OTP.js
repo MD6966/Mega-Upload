@@ -25,6 +25,16 @@ const OTP = () => {
   const {enqueueSnackbar} = useSnackbar()
   const [resendDisabled, setResendDisabled] = useState(false);
   const [remainingTime, setRemainingTime] = useState(0);
+  // const handleInputChange = (e, index) => {
+  //   const value = e.target.value;
+  //   if (value.length === 1) {
+  //     if (index < inputRefs.length - 1) {
+  //       inputRefs[index + 1].current.focus();
+  //     }
+  //   }
+  //   const newOTPValue = otpValue.slice(0, index) + value + otpValue.slice(index + 1);
+  //   setOTPValue(newOTPValue);
+  // };
   const handleInputChange = (e, index) => {
     const value = e.target.value;
     if (value.length === 1) {
@@ -35,7 +45,17 @@ const OTP = () => {
     const newOTPValue = otpValue.slice(0, index) + value + otpValue.slice(index + 1);
     setOTPValue(newOTPValue);
   };
-
+  const handlePaste = (e) => {
+    e.preventDefault();
+    const pastedValue = e.clipboardData.getData('text');
+    const pastedOTP = pastedValue.slice(0, inputRefs.length);
+  
+    for (let i = 0; i < inputRefs.length; i++) {
+      const inputRef = inputRefs[i];
+      inputRef.current.value = pastedOTP[i];
+      handleInputChange({ target: { value: pastedOTP[i] } }, i);
+    }
+  };
   const handleKeyDown = (e, index) => {
     if (e.key === 'Backspace' && index > 0 && e.target.value === '') {
       inputRefs[index - 1].current.focus();
@@ -117,6 +137,7 @@ const OTP = () => {
                   inputRef={ref}
                   onChange={(e) => handleInputChange(e, index)}
                   onKeyDown={(e) => handleKeyDown(e, index)}
+                  onPaste={handlePaste}
                   variant="standard"
                   margin="normal"
                   fullWidth
