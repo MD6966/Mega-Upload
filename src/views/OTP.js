@@ -216,13 +216,12 @@ const OTP = () => {
   const handleResendOTP = () => {
     if (resendAttempts < 3) {
       dispatch(updateResend(true, resendAttempts + 1));
-      dispatch(updateTimer(60));
+      dispatch(updateTimer(6));
   
       setTimeout(() => {
-        // No need to reset resendAttempts to its previous state
         dispatch(updateResend(false, resendAttempts + 1));
         dispatch(updateTimer(0));
-      }, 60000);
+      }, 6000);
   
       dispatch(resendOTP(id))
         .then((result) => {
@@ -237,7 +236,6 @@ const OTP = () => {
       dispatch(updateResend(true, resendAttempts));
       dispatch(updateTimer(3600));
       setTimeout(() => {
-        // No need to reset resendAttempts to 0
         dispatch(updateResend(false, resendAttempts));
         dispatch(updateTimer(0));
       }, 3600000);

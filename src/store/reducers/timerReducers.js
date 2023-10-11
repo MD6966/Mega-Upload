@@ -12,7 +12,8 @@ const initialState = {
           ...state,
           remainingTime: action.remainingTime,
         };
-      case 'UPDATE_RESEND':
+        case 'UPDATE_RESEND':
+        console.log("RESEND ACTION")
         return {
           ...state,
           resendDisabled: action.resendDisabled,
