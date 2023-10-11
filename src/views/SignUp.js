@@ -20,7 +20,6 @@ const StyledRoot = styled(Box)(({theme})=>({
 }))
 
 const initialValues = {
-  name:'',
   email:'',
   password:'',
   role:'user'
@@ -116,7 +115,6 @@ const SignUp = () => {
             >
               <form autoComplete='off' onSubmit={handleSubmit}>
 
-                <TextField label="Name" fullWidth sx={{mb:2}} name='name' value={formValues.name} onChange={handleChange} required/>
                 <TextField label="Email" fullWidth sx={{mb:2}} name='email' value={formValues.email} onChange={handleChange} required type='email'/>
                 <FormControl sx={{ mb:2}} variant="outlined" fullWidth>
           <InputLabel htmlFor="outlined-adornment-password"
