@@ -30,17 +30,6 @@ const OTP = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-
-  // const handleInputChange = (e, index) => {
-  //   const value = e.target.value;
-  //   if (value.length === 1) {
-  //     if (index < inputRefs.length - 1) {
-  //       inputRefs[index + 1].current.focus();
-  //     }
-  //     const newOTPValue = otpValue.slice(0, index) + value + otpValue.slice(index + 1);
-  //     setOTPValue(newOTPValue);
-  //   }
-  // };
   const handleInputChange = (e, index) => {
     const value = e.target.value;
     if (value.length === 1) {
@@ -51,94 +40,6 @@ const OTP = () => {
       setOTPValue(newOTPValue);
     }
   };
-
-  // const handlePaste = (e) => {
-  //   e.preventDefault();
-  //   const pastedValue = e.clipboardData.getData('text');
-  //   const pastedOTP = pastedValue.slice(0, inputRefs.length);
-
-  //   for (let i = 0; i < inputRefs.length; i++) {
-  //     const inputRef = inputRefs[i];
-  //     inputRef.current.value = pastedOTP[i];
-  //     handleInputChange({ target: { value: pastedOTP[i] } }, i);
-  //   }
-  // };
-
-  // const handleKeyDown = (e, index) => {
-  //   if (e.key === 'Backspace' && index > 0 && e.target.value === '') {
-  //     inputRefs[index - 1].current.focus();
-  //   }
-  // };
-
-  // const handleValidate = (e) => {
-  //   setLoading(true);
-  //   e.preventDefault();
-  //   dispatch(verifyOTP(id, otpValue))
-  //     .then((result) => {
-  //       enqueueSnackbar(result.data.message, {
-  //         variant: 'success',
-  //       });
-  //       navigate('/home', { replace: true });
-  //       setLoading(false);
-  //     })
-  //     .catch((err) => {
-  //       setLoading(false);
-  //       enqueueSnackbar(err.response.data.message, {
-  //         variant: 'error',
-  //       });
-
-  //       setOTPValue('');
-
-  //       const emptyRefs = Array(inputRefs.length).fill('');
-  //       inputRefs.forEach((ref, index) => {
-  //         ref.current.value = emptyRefs[index];
-  //       });
-  //     });
-  // };
-
-  // const handleResendOTP = () => {
-  //   if (resendAttempts < 3) {
-  //     setResendAttempts(resendAttempts + 1);
-  //     setResendDisabled(true);
-  //     setRemainingTime(6);
-
-  //     const timerId = setTimeout(() => {
-  //       setResendDisabled(false);
-  //       setRemainingTime(0);
-  //     }, 6000);
-
-  //     dispatch(resendOTP(id))
-  //       .then((result) => {
-  //         enqueueSnackbar(result.data.message, {
-  //           variant: 'success',
-  //         });
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //   } else {
-  //     setResendDisabled(true);
-  //     setRemainingTime(3600);
-  //     setTimeout(() => {
-  //       setResendDisabled(false);
-  //       setRemainingTime(0);
-  //       setResendAttempts(0);
-  //     }, 3600000);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (remainingTime > 0) {
-  //     const timer = setInterval(() => {
-  //       setRemainingTime((prevTime) => prevTime - 1);
-  //     }, 1000);
-
-  //     return () => {
-  //       clearInterval(timer);
-  //     };
-  //   }
-  // }, [remainingTime]);
-
   const handlePaste = (e) => {
     e.preventDefault();
     const pastedValue = e.clipboardData.getData('text');
@@ -150,8 +51,6 @@ const OTP = () => {
       handleInputChange({ target: { value: pastedOTP[i] } }, i);
     }
   };
-  console.log(resendAttempts, '+++++++++++')
-
   const handleKeyDown = (e, index) => {
     if (e.key === 'Backspace' && index > 0 && e.target.value === '') {
       inputRefs[index - 1].current.focus();
@@ -184,44 +83,15 @@ const OTP = () => {
       });
   };
 
-  // const handleResendOTP = () => {
-  //   if (resendAttempts < 3) {
-  //     dispatch(updateResend(true, resendAttempts + 1));
-  //     dispatch(updateTimer(6));
-
-  //     const timerId = setTimeout(() => {
-  //       dispatch(updateResend(false, resendAttempts + 1));
-  //       dispatch(updateTimer(0));
-  //     }, 6000);
-
-  //     dispatch(resendOTP(id))
-  //       .then((result) => {
-  //         enqueueSnackbar(result.data.message, {
-  //           variant: 'success',
-  //         });
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //   } else {
-  //     dispatch(updateResend(true, resendAttempts));
-  //     dispatch(updateTimer(3600));
-  //     setTimeout(() => {
-  //       dispatch(updateResend(false, 0));
-  //       dispatch(updateTimer(0));
-  //     }, 3600000);
-  //   }
-  // };
-
   const handleResendOTP = () => {
     if (resendAttempts < 3) {
       dispatch(updateResend(true, resendAttempts + 1));
-      dispatch(updateTimer(6));
+      dispatch(updateTimer(60));
   
       setTimeout(() => {
         dispatch(updateResend(false, resendAttempts + 1));
         dispatch(updateTimer(0));
-      }, 6000);
+      }, 60000);
   
       dispatch(resendOTP(id))
         .then((result) => {
@@ -236,7 +106,7 @@ const OTP = () => {
       dispatch(updateResend(true, resendAttempts));
       dispatch(updateTimer(3600));
       setTimeout(() => {
-        dispatch(updateResend(false, resendAttempts));
+        dispatch(updateResend(false, 0));
         dispatch(updateTimer(0));
       }, 3600000);
     }
@@ -252,7 +122,7 @@ const OTP = () => {
         clearInterval(timer);
       };
     } else {
-      dispatch(updateResend(false, remainingTime));
+      dispatch(updateResend(false, resendAttempts));
     }
   }, [remainingTime]);
   // console.log(resendDisabled)
