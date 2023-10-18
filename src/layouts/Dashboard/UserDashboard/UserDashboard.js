@@ -25,7 +25,6 @@ const Main = styled('div')(({ theme }) => ({
 }));
 const UserDashboard = () => {
     const [open, setOpen] = React.useState(false);
-
     return (
       <div>
          <StyledRoot>

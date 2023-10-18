@@ -14,6 +14,7 @@ import ProtectedRoutes from './components/ProtectedRoutes/ProtectedRoutes'
 import ResetPassword from "./views/ResetPassword";
 import UserDashboard from "./layouts/Dashboard/UserDashboard";
 import UploadFile from "./views/User/UploadFile";
+import MyUploads from "./views/User/MyUploads";
 export default function Router() {
     const isAuthenticated = useSelector((state)=>state.auth.isAuthenticated)
     // console.log(isAuthenticated)
@@ -32,7 +33,8 @@ export default function Router() {
         element: <ProtectedRoutes isLogged={isAuthenticated} />,
         children:[
             {path:'user', element:<UserDashboard />, children:[
-            {path:'upload', element:<UploadFile />}
+            {path:'upload', element:<UploadFile />},
+            {path:'uploads', element:<MyUploads />},
             ]
         },
 

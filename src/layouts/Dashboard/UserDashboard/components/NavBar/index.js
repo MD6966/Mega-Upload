@@ -1,21 +1,17 @@
 import React,  { useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { styled, alpha } from '@mui/material/styles';
 import { Box, Button, Drawer, Typography, Avatar, 
     List, ListItem,ListItemButton, ListItemIcon,ListItemText } from '@mui/material';
 import Scrollbar from '../../../../../components/scrollbar';
 import useResponsive from '../../../../../components/hooks/useResponsive';
-import LeaderboardIcon from '@mui/icons-material/Leaderboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import Inventory2Icon from '@mui/icons-material/Inventory2';
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import TimelineIcon from '@mui/icons-material/Timeline';
-import MessageIcon from '@mui/icons-material/Message';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import SettingsIcon from '@mui/icons-material/Settings';
+import CloudIcon from '@mui/icons-material/Cloud';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { makeStyles } from '@mui/styles';
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import clsx from 'clsx'
+import { useDispatch } from 'react-redux';
 
 const NAV_WIDTH = 280;
 const StyledAccount = styled('div')(({ theme }) => ({
@@ -37,24 +33,27 @@ const StyledAccount = styled('div')(({ theme }) => ({
     btn: {},
   }));
   export default function Nav({ openNav, onCloseNav }) {
+    const navigate  = useNavigate()
+    const dispatch = useDispatch()
+    
     const ListData = [
         {
           id: 1,
-          title: "Dashboard",
-          icon: <DashboardIcon />,
-        //   to: "/admin/dashboard",
+          title: "Upload File",
+          icon: <CloudUploadIcon />,
+          to: "/user/upload",
         },
         {
-          id: 2,
+            id: 2,
+            title: "My Uploads",
+            icon: <CloudIcon />,
+            to: "/user/uploads",
+          },
+        {
+          id: 3,
           title: "Settings",
           icon: <SettingsIcon />,
           // to: "/admin/new-invoices",
-        },
-        {
-          id: 3,
-          title: "Signout",
-          icon: <ExitToAppIcon />,
-          // to: "/admin/approved-by-admin",
         },
       ];
   const location = useLocation();
@@ -88,10 +87,7 @@ const StyledAccount = styled('div')(({ theme }) => ({
       >
         <Box sx={{ px: 2.5, py: 3, display: 'inline-flex', }}>
         <Box sx={{display:'flex'}}>
-                        <img src='/assets/images/log.png' alt="logo" width="55px" />
-                        <Typography variant="h6" component="div" sx={{mt:1.5, fontSize:'1.5rem', fontWeight:'bold'}}>
-                            Architecture
-                        </Typography>
+                        <img src='/assets/images/logo.png' alt="logo" />
                         </Box>
         </Box>
         <Box sx={{p:2}}>
@@ -117,13 +113,14 @@ const StyledAccount = styled('div')(({ theme }) => ({
                             sx={{
                                 "&:hover": {
                                   borderRadius: "10px",
+                                  backgroundColor: "#686868"
                                 },
                               }}
                           >
                             <ListItemIcon
                               sx={{
                                 color:
-                                  selectedIndex === val.id ? "#fff" : "#686868",
+                                  selectedIndex === val.id ? "#fff" : "#fff",
                               }}
                             >
                               {val.icon}
@@ -132,7 +129,7 @@ const StyledAccount = styled('div')(({ theme }) => ({
                               primary={val.title}
                               sx={{
                                 color:
-                                  selectedIndex === val.id ? "#fff" : "#686868",
+                                  selectedIndex === val.id ? "#fff" : "#fff",
                               }}
                             />
                           </ListItemButton>
@@ -164,7 +161,7 @@ const StyledAccount = styled('div')(({ theme }) => ({
             PaperProps={{
               sx: {
                 width: NAV_WIDTH,
-                bgcolor: 'background.default',
+                bgcolor: '#353B48',
                 borderRightStyle: 'dashed',
               },
             }}
