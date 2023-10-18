@@ -12,6 +12,8 @@ import HomePage from "./views/HomePage";
 import { useSelector } from "react-redux";
 import ProtectedRoutes from './components/ProtectedRoutes/ProtectedRoutes'
 import ResetPassword from "./views/ResetPassword";
+import UserDashboard from "./layouts/Dashboard/UserDashboard";
+import UploadFile from "./views/User/UploadFile";
 export default function Router() {
     const isAuthenticated = useSelector((state)=>state.auth.isAuthenticated)
     // console.log(isAuthenticated)
@@ -24,11 +26,16 @@ export default function Router() {
        { path: '/signup' , element: <SignUp /> },
        { path: '/verify-otp/:id' , element: <OTP /> },
        { path: '/reset/:token' , element: <ResetPassword /> },
+       {path:'/home', element:<HomePage />},
 
        {
         element: <ProtectedRoutes isLogged={isAuthenticated} />,
         children:[
-            {path:'/home', element:<HomePage />},
+            {path:'user', element:<UserDashboard />, children:[
+            {path:'upload', element:<UploadFile />}
+            ]
+        },
+
         ]
        },
 

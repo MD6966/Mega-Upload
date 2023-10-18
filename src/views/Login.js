@@ -52,7 +52,7 @@ const Login = () => {
         navigate(`/verify-otp/${result.data.data.user.id}`)
       }
       else {
-        navigate('/home')
+        navigate('/user/upload')
       }
       setLoading(false)
       // if(result.status == 200){

@@ -114,7 +114,6 @@ const SignUp = () => {
             sx={{p:4, mt:3}}
             >
               <form autoComplete='off' onSubmit={handleSubmit}>
-
                 <TextField label="Email" fullWidth sx={{mb:2}} name='email' value={formValues.email} onChange={handleChange} required type='email'/>
                 <FormControl sx={{ mb:2}} variant="outlined" fullWidth>
           <InputLabel htmlFor="outlined-adornment-password"
