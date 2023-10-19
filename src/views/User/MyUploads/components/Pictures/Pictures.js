@@ -5,7 +5,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Box, Button, CardActionArea, CardActions, FormControl, Grid, IconButton, Input, InputAdornment, InputLabel } from '@mui/material';
+import { Box, Button, CardActionArea, CardActions, FormControl, Grid, IconButton, Input, InputAdornment, InputLabel, useTheme } from '@mui/material';
 import moment from 'moment';
 import { HashLoader } from 'react-spinners';
 import { Search, Visibility, VisibilityOff } from '@mui/icons-material';
@@ -14,6 +14,7 @@ import { Link, useNavigate } from 'react-router-dom';
 const Pictures = () => {
   const dispatch = useDispatch();
   const [data, setData] = React.useState([]);
+  const theme = useTheme()
   const [loading, setLoading] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState('');
   const [noDataFound, setNoDataFound] = React.useState(false); 
@@ -70,7 +71,11 @@ const Pictures = () => {
       ) : (
         <Box>
           <Box>
-            <FormControl sx={{ m: 1, width: '45ch', mb: 5 }} variant="standard">
+            <FormControl sx={{ m: 1, width: '45ch', mb: 5,
+            [theme.breakpoints.down('sm')]: {
+              width:'25ch'
+            }
+          }} variant="standard">
               <InputLabel htmlFor="standard-adornment-search">Search in Pictures</InputLabel>
               <Input
                 id="standard-adornment-search"

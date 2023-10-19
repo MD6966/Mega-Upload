@@ -10,6 +10,9 @@ import Documents from './components/Documents'
 import Softwares from './components/Softwares'
 const StyledRoot = styled(Box)(({ theme }) => ({
   padding: theme.spacing(5),
+  [theme.breakpoints.down('sm')]: {
+    padding: theme.spacing(2)
+  }
 }));
 const StyledContent = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2),

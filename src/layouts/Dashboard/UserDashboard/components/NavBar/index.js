@@ -53,13 +53,13 @@ const StyledAccount = styled('div')(({ theme }) => ({
           id: 3,
           title: "Settings",
           icon: <SettingsIcon />,
-          // to: "/admin/new-invoices",
+          to: "/user/profile",
         },
       ];
   const location = useLocation();
   const [dOpen, setDopen] = React.useState(false);
     const [selectedIndex, setSelectedIndex] = React.useState(1);
-    const isDesktop = useResponsive('up', 'lg');
+    const isDesktop = useResponsive('up', 'md');
     const classes = useStyles()
     React.useEffect(() => {
         const matchingItem = ListData.find((item) => item.to === location.pathname);
@@ -150,8 +150,8 @@ const StyledAccount = styled('div')(({ theme }) => ({
       <Box
         component="nav"
         sx={{
-          flexShrink: { lg: 0 },
-          width: { lg: NAV_WIDTH },
+          flexShrink: { md: 0 },
+          width: { md: NAV_WIDTH },
         }}
       >
         {isDesktop ? (
@@ -168,20 +168,8 @@ const StyledAccount = styled('div')(({ theme }) => ({
           >
             {renderContent}
           </Drawer>
-        ) : (
-          <Drawer
-            open={openNav}
-            onClose={onCloseNav}
-            ModalProps={{
-              keepMounted: true,
-            }}
-            PaperProps={{
-              sx: { width: NAV_WIDTH },
-            }}
-          >
-            {renderContent}
-          </Drawer>
-        )}
+        ) : null
+        }
       </Box>
     );
   }

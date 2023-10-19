@@ -1,5 +1,5 @@
 import { AppBar, Toolbar, styled, Typography, Stack, Avatar, Box, Menu, MenuItem, 
-    Container, Divider, List, ListItemIcon, ListItemText, ListItem, Button, IconButton, TextField, InputAdornment, OutlinedInput, InputLabel, FormControl, Badge } from '@mui/material';
+    Container, Divider, List, ListItemIcon, ListItemText, ListItem, Button, IconButton, TextField, InputAdornment, OutlinedInput, InputLabel, FormControl, Badge, useTheme, Drawer, ListItemButton } from '@mui/material';
 import React, {useState, useRef} from 'react'
 import {bgBlur} from './../../../../../utils/cssStyles'
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +10,36 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { logOut } from '../../../../../store/actions/authActions';
+import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
+import { Link } from 'react-router-dom';
+import clsx from 'clsx'
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import SettingsIcon from '@mui/icons-material/Settings';
+import CloudIcon from '@mui/icons-material/Cloud';
+import { makeStyles } from '@mui/styles';
+
+const ListData = [
+  {
+    id: 1,
+    title: "Upload File",
+    icon: <CloudUploadIcon />,
+    to: "/user/upload",
+  },
+  {
+      id: 2,
+      title: "My Uploads",
+      icon: <CloudIcon />,
+      to: "/user/uploads",
+    },
+  {
+    id: 3,
+    title: "Settings",
+    icon: <SettingsIcon />,
+    to: "/user/profile",
+  },
+];
+
 const NAV_WIDTH = 280;
 
 const HEADER_MOBILE = 54;
@@ -18,13 +48,15 @@ const HEADER_DESKTOP = 62;
 
 const StyledRoot = styled(AppBar)(({theme})=> ({
     ...bgBlur({color: theme.palette.background.default}),
-    [theme.breakpoints.up('lg')]: {
+    [theme.breakpoints.up('md')]: {
         width: `calc(100% - ${NAV_WIDTH + 1}px)`,
       },
   
   }))
   const StyledToolbar = styled(Toolbar)(({theme})=> ({
     minHeight: HEADER_MOBILE,
+    display:'flex',
+    justifyContent:'space-between',
     [theme.breakpoints.up('lg')]: {
         minHeight: HEADER_DESKTOP,
         padding: theme.spacing(0, 5),
@@ -32,10 +64,25 @@ const StyledRoot = styled(AppBar)(({theme})=> ({
         justifyContent:'space-between'
       },
    }))
+   const useStyles = makeStyles((theme) => ({
+    selected: {
+      background: "#474bd1",
+      borderRadius: 10,
+    },
+    icon: {
+      marginLeft: "auto",
+    },
+    drawer: {},
+    btn: {},
+  }));
 const TopBar = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const location = useLocation()
+    const theme = useTheme()
+    const classes = useStyles()
+    const [openD, setOpenD] = React.useState(false)
+    const [selectedIndex, setSelectedIndex] = React.useState(1);
     const user = useSelector((state)=>state.auth.user)
     // console.log(user)
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -81,36 +128,88 @@ const TopBar = () => {
             ]
           })
     }
+    const handleListItemClick = (event, index) => {
+      setSelectedIndex(index);
+      setOpenD(false);
+    };
+    const renderContent = (
+      <Box
+        sx={{
+          height: 1,
+          '& .simplebar-content': { height: 1, display: 'flex', flexDirection: 'column' },
+        }}
+      >
+        <Box sx={{ px: 2.5, py: 3, display: 'inline-flex', }}>
+        <Box sx={{display:'flex'}}>
+                        <img src='/assets/images/logo.png' alt="logo" />
+                        </Box>
+        </Box>
+        <Box sx={{p:2}}>
+        <List component="nav">
+                {ListData.map((val) => {
+                  return (
+                    <>
+                    <ListItem
+                          key={val}
+                          disablePadding
+                          className={clsx(classes.root, {
+                            [classes.selected]: selectedIndex === val.id,
+                          })}
+                          component={Link}
+                          to={val.to}
+                          sx={{mb:2}}
+                        >
+                          <ListItemButton
+                            selected={selectedIndex === val.id}
+                            onClick={(event) =>
+                              handleListItemClick(event, val.id)
+                            }
+                            sx={{
+                                "&:hover": {
+                                  borderRadius: "10px",
+                                  backgroundColor: "#686868"
+                                },
+                              }}
+                          >
+                            <ListItemIcon
+                              sx={{
+                                color:
+                                  selectedIndex === val.id ? "#fff" : "#fff",
+                              }}
+                            >
+                              {val.icon}
+                            </ListItemIcon>
+                            <ListItemText
+                              primary={val.title}
+                              sx={{
+                                color:
+                                  selectedIndex === val.id ? "#fff" : "#fff",
+                              }}
+                            />
+                          </ListItemButton>
+                        </ListItem>    
+                    
+                    </>
+                  );
+                })}
+              </List>
+        </Box>  
+        <Box sx={{ flexGrow: 1 }} />
+
+        
+      </Box>
+    );
   return (
     <div>
     <StyledRoot >
       <StyledToolbar>
-        <Typography sx={{color:'#000000', fontWeight:800, fontSize:'1.5rem'}}>
+        <Typography sx={{color:'#000000', fontWeight:800, fontSize:'1.5rem',}}>
          {location.pathname == '/user/upload' ? 'Upload File' :
          location.pathname == '/user/uploads' ? 'My Uploads' :
          location.pathname == '/admin/order' ? 'Orders' : 'Dashboard'
 
          }
         </Typography>
-        {/* <Box>
-          {  location.pathname == '/user/uploads' &&
-        <FormControl sx={{ m: 1, width:'400px'}} variant="outlined">
-        <InputLabel htmlFor="outlined-adornment-password"> Search</InputLabel>
-        <OutlinedInput
-          id="outlined-adornment-password"
-          startAdornment={
-            <InputAdornment position="start">
-                <SearchIcon />
-            </InputAdornment>
-          }
-          label="Search"
-          size='small'
-          placeholder='Search here.....'
-          sx={{borderRadius:'10px', background:'#f7f7f7'}}
-        />
-      </FormControl> 
-          }
-        </Box> */}
         <Box />
         <Stack
         direction="row"
@@ -118,6 +217,11 @@ const TopBar = () => {
         spacing={{
           xs:0.5,
           sm:1
+        }}
+        sx={{
+          [theme.breakpoints.down('md')]:{
+            display:'none'
+          }
         }}
         >
           <IconButton
@@ -138,6 +242,19 @@ const TopBar = () => {
             </IconButton>
           </Box>
         </Stack>
+        <Box 
+        sx={{
+          [theme.breakpoints.up('md')]: {
+            display:'none'
+          }
+        }}
+        >
+          <IconButton
+          onClick={()=>setOpenD(true)}
+          >
+            <MenuIcon />
+          </IconButton>
+        </Box>
         <Menu
         id="basic-menu"
         anchorEl={anchorEl}
@@ -152,6 +269,22 @@ const TopBar = () => {
         <MenuItem onClick={handleSignOut}>Logout</MenuItem>
       </Menu>
       </StyledToolbar>
+      
+      <Drawer variant='temporary' open={openD} onClose={()=>setOpenD(false)}
+       PaperProps={{
+        sx: {
+          bgcolor: '#353B48',
+        },
+      }}
+      >
+          <IconButton 
+          onClick={()=>setOpenD(false)}
+          style={{ alignSelf: 'flex-end', paddingRight: '18px', 
+          paddingTop: '8px', fontSize:'1.5rem', color:'#fff' }}>
+            <CloseIcon />
+          </IconButton>
+          {renderContent}
+      </Drawer>
   </StyledRoot>
   </div>
   )

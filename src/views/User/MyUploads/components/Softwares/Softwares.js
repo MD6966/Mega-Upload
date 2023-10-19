@@ -8,10 +8,12 @@ import Typography from '@mui/material/Typography';
 import { Box, Button, CardActionArea, CardActions, FormControl, Grid, IconButton, Input, InputAdornment, InputLabel } from '@mui/material';
 import moment from 'moment';
 import { HashLoader } from 'react-spinners';
-import { Search } from '@mui/icons-material';
+import { Search, Visibility } from '@mui/icons-material';
+import { useNavigate } from 'react-router';
 
 const Softwares = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [loading, setLoading] = React.useState(false);
   const [data, setData] = React.useState([]);
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -41,7 +43,10 @@ const Softwares = () => {
   React.useEffect(() => {
     setNoDataFound(filteredData.length === 0);
   }, [filteredData]);
+  const handleSoftwareClick = (val) => {
+    navigate('/user/view-software', {state:val})
 
+  }
   return (
     <div>
       {loading ? (
@@ -96,6 +101,8 @@ const Softwares = () => {
                           height="140"
                           image="/assets/images/file-upload.png"
                           alt="green iguana"
+                          onClick={()=>handleSoftwareClick(val)}
+
                         />
                         <CardContent>
                           <Typography
@@ -116,7 +123,11 @@ const Softwares = () => {
                         </CardContent>
                       </CardActionArea>
                       <CardActions>
-                        <Button size="small" color="primary">
+                        <Button size="small" color="primary"
+                        variant='outlined'
+                        endIcon={<Visibility />}
+                        onClick={()=>handleSoftwareClick(val)}
+                        >
                           View
                         </Button>
                       </CardActions>
