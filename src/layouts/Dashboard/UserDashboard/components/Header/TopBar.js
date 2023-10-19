@@ -92,7 +92,7 @@ const TopBar = () => {
 
          }
         </Typography>
-        <Box>
+        {/* <Box>
           {  location.pathname == '/user/uploads' &&
         <FormControl sx={{ m: 1, width:'400px'}} variant="outlined">
         <InputLabel htmlFor="outlined-adornment-password"> Search</InputLabel>
@@ -110,7 +110,7 @@ const TopBar = () => {
         />
       </FormControl> 
           }
-        </Box>
+        </Box> */}
         <Box />
         <Stack
         direction="row"
