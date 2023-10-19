@@ -115,8 +115,7 @@ const Pictures = () => {
                       </CardActionArea>
                       <CardActions>
                         <Button size="small" color="primary"
-                        component={Link}
-                        to="/user/view-picture"
+                        onClick={()=>handleImageClick(val)}
                         variant='outlined'
                         endIcon={<Visibility />}
                         >

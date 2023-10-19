@@ -16,6 +16,7 @@ import UserDashboard from "./layouts/Dashboard/UserDashboard";
 import UploadFile from "./views/User/UploadFile";
 import MyUploads from "./views/User/MyUploads";
 import ViewSinglePicture from "./views/User/MyUploads/components/Pictures/components/ViewSinglePicute/ViewSinglePicture";
+import ViewSingleDocument from "./views/User/MyUploads/components/Documents/components/ViewSingleDocument";
 export default function Router() {
     const isAuthenticated = useSelector((state)=>state.auth.isAuthenticated)
     // console.log(isAuthenticated)
@@ -36,7 +37,8 @@ export default function Router() {
             {path:'user', element:<UserDashboard />, children:[
             {path:'upload', element:<UploadFile />},
             {path:'uploads', element:<MyUploads />},
-            {path:'view-picture', element: <ViewSinglePicture/>}
+            {path:'view-picture', element: <ViewSinglePicture/>},
+            {path:'view-document', element:<ViewSingleDocument />},
             ]
         },
 

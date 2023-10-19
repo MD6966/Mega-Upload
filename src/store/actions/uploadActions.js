@@ -95,7 +95,19 @@ api.interceptors.request.use(
     }
   }
 
-
+  export const  editDocDetails = (id,name,desc) => async (dispatch) => {
+    try{
+      const res = await api.put(`api/user/upload/documents/${id}?name=${name}&description=${desc}`)
+      dispatch({
+        type:'UPDATE_DOC_DETAILS',
+        payload:res.data
+      })
+        return res
+    }
+    catch(err) {
+      throw err
+    }
+  }
   
 //---------------SOFTWARE ACTIONS------------------------
 
@@ -118,6 +130,20 @@ export const  getSoftwares = () => async (dispatch) => {
       const res = await api.delete(`api/user/upload/software/${id}`)
       dispatch({
         type:'DEL_PICTURE',
+        payload:res.data
+      })
+        return res
+    }
+    catch(err) {
+      throw err
+    }
+  }
+
+  export const  editSwDetails = (id,name,desc) => async (dispatch) => {
+    try{
+      const res = await api.put(`api/user/upload/software/${id}?name=${name}&description=${desc}`)
+      dispatch({
+        type:'UPDATE_DOC_DETAILS',
         payload:res.data
       })
         return res

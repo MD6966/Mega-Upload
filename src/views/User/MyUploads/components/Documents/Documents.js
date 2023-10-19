@@ -8,10 +8,12 @@ import Typography from '@mui/material/Typography';
 import { Box, Button, CardActionArea, CardActions, FormControl, Grid, IconButton, Input, InputAdornment, InputLabel } from '@mui/material';
 import moment from 'moment';
 import { HashLoader } from 'react-spinners';
-import { Search } from '@mui/icons-material';
+import { Search, Visibility } from '@mui/icons-material';
+import { useNavigate } from 'react-router';
 
 const Documents = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [loading, setLoading] = React.useState(false);
   const [data, setData] = React.useState([]);
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -42,6 +44,9 @@ const Documents = () => {
     setNoDataFound(filteredData.length === 0);
   }, [filteredData]);
 
+  const handleDocClick = (val) => {
+    navigate('/user/view-document', {state:val})
+  }
   return (
     <div>
       {loading ? (
@@ -96,6 +101,7 @@ const Documents = () => {
                           height="140"
                           image="/assets/images/file-upload.png"
                           alt="green iguana"
+                          onClick={()=>handleDocClick(val)}
                         />
                         <CardContent>
                           <Typography
@@ -116,7 +122,11 @@ const Documents = () => {
                         </CardContent>
                       </CardActionArea>
                       <CardActions>
-                        <Button size="small" color="primary">
+                        <Button size="small" color="primary"
+                        variant='outlined'
+                        onClick={()=>handleDocClick(val)}
+                        endIcon={<Visibility/>}
+                        >
                           View
                         </Button>
                       </CardActions>

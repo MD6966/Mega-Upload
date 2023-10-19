@@ -12,16 +12,15 @@ import { useLocation, useNavigate } from 'react-router';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { useDispatch } from 'react-redux';
-import { delPicture } from '../../../../../../../store/actions/uploadActions';
 import { HashLoader } from 'react-spinners';
 import { useSnackbar } from 'notistack';
-import EditPictureDetails from '../EditPictureDetails/EditPictureDetails';
-
+import EditDocumentDetails from '../EditDocumentDetails';
+import { delDocument } from '../../../../../../../store/actions/uploadActions';
 const StyledRoot = styled(Box)(({theme})=> ({
     minHeight:'80vh',
     padding:theme.spacing(5)
 }))
-const ViewSinglePicture = () => {
+const ViewSingleDocument = () => {
     const [open, setOpen] = React.useState(false)
     const {state} = useLocation()
     // console.log(state)
@@ -31,14 +30,14 @@ const ViewSinglePicture = () => {
     const {enqueueSnackbar} = useSnackbar()
     const handleDelete = () => {
         confirmAlert({
-            title: "Delete Picture",
-            message: "Are you sure to delete this picture ?",
+            title: "Delete Document",
+            message: "Are you sure to delete this document ?",
             buttons: [
               {
                 label: "Yes",
                 onClick: () => {
                     setLoading(true)
-                  dispatch(delPicture(state.id)).then((result) => {
+                  dispatch(delDocument(state.id)).then((result) => {
                     enqueueSnackbar(result.data.message, {
                         variant:'success'
                     })
@@ -56,7 +55,8 @@ const ViewSinglePicture = () => {
           });
     }
   return (
-    <Page title="View Picture">
+    <div>
+     <Page title="View Picture">
         <StyledRoot>
         <Card
         elevation={4}
@@ -114,9 +114,10 @@ const ViewSinglePicture = () => {
             </DialogContent>
         </Dialog>
         }
-        <EditPictureDetails open={open} close={()=>setOpen(false)} state={state} />
+        <EditDocumentDetails open={open} close={()=>setOpen(false)} state={state} />
     </Page>
+    </div>
   )
 }
 
-export default ViewSinglePicture
+export default ViewSingleDocument
