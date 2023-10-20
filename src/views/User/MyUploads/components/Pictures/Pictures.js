@@ -99,6 +99,7 @@ const Pictures = () => {
           ) : (
             <Grid container spacing={3}>
               {filteredData.map((val) => {
+                // console.log(val)
                 const formattedDate = moment(val.created_at).format('MMMM D, YYYY');
                 return (
                   <Grid item xs={12} md={6} lg={4} key={val.id}>
@@ -107,7 +108,7 @@ const Pictures = () => {
                         <CardMedia
                           component="img"
                           height="140"
-                          image="/assets/images/file-upload.png"
+                          image={val.path}
                           alt="green iguana"
                           onClick={() =>handleImageClick(val)}
                         />

@@ -7,7 +7,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { Delete, Edit } from '@mui/icons-material';
+import { Delete, Edit, Visibility } from '@mui/icons-material';
 import { useLocation, useNavigate } from 'react-router';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
@@ -16,6 +16,7 @@ import { delPicture } from '../../../../../../../store/actions/uploadActions';
 import { HashLoader } from 'react-spinners';
 import { useSnackbar } from 'notistack';
 import EditPictureDetails from '../EditPictureDetails/EditPictureDetails';
+import { Link } from 'react-router-dom';
 
 const StyledRoot = styled(Box)(({theme})=> ({
     minHeight:'80vh',
@@ -63,8 +64,8 @@ const ViewSinglePicture = () => {
         sx={{border: '1px solid #bababa'}}
         >
       <CardMedia
-        sx={{ height: 440 }}
-        image="/assets/images/file-upload.png"
+        sx={{ height: 440, cursor:'pointer'}}
+        image={state.path}
         title={state.name}
         />
       <CardContent>
@@ -76,6 +77,14 @@ const ViewSinglePicture = () => {
         </Typography>
       </CardContent>
       <CardActions>
+        <Button size='small' variant='outlined'
+        endIcon={<Visibility />}
+        href={state.path}
+        target="_blank"
+        sx={{mr:1}}
+        >
+          View Image
+        </Button>
         <Button size="small" variant='outlined' 
         endIcon={<Edit />}
         onClick={() => setOpen(true)}
