@@ -161,7 +161,7 @@ const ProfilePage = () => {
           </Grid>
         </StyledGrid>
       </StyledRoot>
-      <EditProfileInfo open={open} close={()=>setOpen(false)} />
+      <EditProfileInfo open={open} close={()=>setOpen(false)} user={user} />
     </Page>
   )
 }
