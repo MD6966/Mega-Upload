@@ -1,14 +1,14 @@
 import React from 'react'
 import Page from '../../../components/page'
-import { Avatar, Box, Button, DialogActions, DialogContent, DialogTitle, Divider, Grid, Typography, styled } from '@mui/material';
+import { Avatar, Box, Button, DialogActions, DialogContent, DialogTitle, Divider, Grid, Typography, styled, useTheme } from '@mui/material';
 import { useSelector } from 'react-redux';
 import EditIcon from '@mui/icons-material/Edit';
 import EditProfileInfo from './components/EditProfileInfo';
 const StyledRoot = styled(Box)(({ theme }) => ({
   padding: theme.spacing(6),
-  [theme.breakpoints.down('sm')]: {
-    padding: theme.spacing(2)
-  }
+  // [theme.breakpoints.down('sm')]: {
+  //   padding: theme.spacing(2)
+  // }
 }));
 const StyledGrid = styled(Grid)(({theme})=>({
         height:'70vh', 
@@ -19,6 +19,7 @@ const ProfilePage = () => {
   const user = useSelector((state)=>state.auth.user)
   // console.log(user)
   const [open, setOpen] = React.useState(false)
+  const theme = useTheme()
   return (
     <Page title="Profile">
       <StyledRoot>
@@ -33,9 +34,20 @@ const ProfilePage = () => {
           }}
           >
             <Box sx={{mt:-4}}>
-              <Divider />
+              <Divider sx={{mb:1, [theme.breakpoints.down('md')]:{display:'none'}}}/>
             <Box sx={{display:'flex', justifyContent:'center'}}>
-                <Avatar sx={{height:'130px', width:'130px',}} src="/assets/images/admin.png"/>
+                <Avatar sx={{
+                  height:'130px', 
+                  width:'130px',
+                  [theme.breakpoints.down('md')]: {
+                    mt:-4,
+                    mb:2,
+                    border:'6px solid white',
+                    height:'100px', 
+                  width:'100px',
+                  }
+                  }} 
+                  src={user.profile_image}/>
             </Box>
             <Typography sx={{
                   fontFamily:'Bebas Neue', 
@@ -43,9 +55,12 @@ const ProfilePage = () => {
                   fontSize:'2.5rem', 
                   color:'#fff',
                   textShadow:'2px 2px 5px #000',
-                  mt:-1
+                  mt:-1,
+                  [theme.breakpoints.down('sm')]: {
+                    fontSize:'1.75rem'
+                  }
                 }}> {user.name} </Typography>
-              <Divider sx={{mt:1}} />
+              <Divider sx={{mt:1, [theme.breakpoints.down('md')]:{display:'none'}}} />
                 </Box>
           </Grid>
           <Grid item xs={12} md={7} lg={8} sx={{background:'#f7f7f7'}}>

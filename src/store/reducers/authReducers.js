@@ -36,10 +36,10 @@ const authReducer = (state=initialState, action) => {
               };
         };
         case 'UPDATE_PROFILE_DETAILS': {
-            console.log(action.payload)
+            // console.log(action.payload.data.user)
             return {
               ...state,
-            //   user: action.payload.data.user, 
+              user: action.payload.data.user, 
             };
           }
         default :  return state

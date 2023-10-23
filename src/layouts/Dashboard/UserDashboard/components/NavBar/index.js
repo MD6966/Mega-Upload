@@ -8,11 +8,9 @@ import useResponsive from '../../../../../components/hooks/useResponsive';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import SettingsIcon from '@mui/icons-material/Settings';
 import CloudIcon from '@mui/icons-material/Cloud';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { makeStyles } from '@mui/styles';
 import clsx from 'clsx'
 import { useDispatch } from 'react-redux';
-
 const NAV_WIDTH = 280;
 const StyledAccount = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -35,7 +33,6 @@ const StyledAccount = styled('div')(({ theme }) => ({
   export default function Nav({ openNav, onCloseNav }) {
     const navigate  = useNavigate()
     const dispatch = useDispatch()
-    
     const ListData = [
         {
           id: 1,
@@ -139,6 +136,9 @@ const StyledAccount = styled('div')(({ theme }) => ({
                   );
                 })}
               </List>
+              <Box sx={{display:'flex', justifyContent:'center'}}>
+              
+              </Box>
         </Box>  
         <Box sx={{ flexGrow: 1 }} />
 

@@ -7,7 +7,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { Delete, Edit } from '@mui/icons-material';
+import { Delete, Edit, Visibility } from '@mui/icons-material';
 import { useLocation, useNavigate } from 'react-router';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
@@ -76,6 +76,12 @@ const ViewSingleDocument = () => {
         </Typography>
       </CardContent>
       <CardActions>
+      <Button size="small" variant='outlined' 
+        endIcon={<Visibility />}
+        href={state.path}
+        target='_blank'
+        sx={{mr:1}}
+        >View Doc</Button>
         <Button size="small" variant='outlined' 
         endIcon={<Edit />}
         onClick={() => setOpen(true)}

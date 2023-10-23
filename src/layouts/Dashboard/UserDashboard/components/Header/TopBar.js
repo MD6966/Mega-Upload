@@ -18,6 +18,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import SettingsIcon from '@mui/icons-material/Settings';
 import CloudIcon from '@mui/icons-material/Cloud';
 import { makeStyles } from '@mui/styles';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 const ListData = [
   {
@@ -109,7 +110,7 @@ const TopBar = () => {
         setOpenNotifications(false);
       };
       const handleSignOut = () => {
-        setAnchorEl(null);
+        setOpenD(false)
         confirmAlert({
             title: 'Log Out',
             message: 'Are you sure to log out ?',
@@ -141,7 +142,7 @@ const TopBar = () => {
       >
         <Box sx={{ px: 2.5, py: 3, display: 'inline-flex', }}>
         <Box sx={{display:'flex'}}>
-                        <img src='/assets/images/logo.png' alt="logo" />
+                        <img src={user.profile_image} alt="logo" />
                         </Box>
         </Box>
         <Box sx={{p:2}}>
@@ -193,7 +194,22 @@ const TopBar = () => {
                   );
                 })}
               </List>
-        </Box>  
+        <Button variant='contained' fullWidth
+              onClick={handleSignOut}
+              endIcon={
+                <ExitToAppIcon />
+              } 
+              sx={{
+                mt:3, 
+                background:'#f7f7f7', 
+                color:'#000',
+                '&:hover' : {
+                  background:'#e2e2e2',
+                }
+                }}>
+                Log Out
+              </Button>
+                </Box>  
         <Box sx={{ flexGrow: 1 }} />
 
         

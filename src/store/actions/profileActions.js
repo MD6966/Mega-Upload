@@ -21,9 +21,23 @@ api.interceptors.request.use(
   }
 );
 
-export const  editProfileDetails = (id,body) => async (dispatch) => {
+export const  editProfileDetails = (body) => async (dispatch) => {
     try{
-      const res = await api.put(`api/user/profile/${id}`, body)
+      const res = await api.post(`api/user/profile`, body)
+      dispatch({
+        type:'UPDATE_PROFILE_DETAILS',
+        payload:res.data
+      })
+        return res
+    }
+    catch(err) {
+      throw err
+    }
+  }
+
+  export const  updateAvatar = (formData) => async (dispatch) => {
+    try{
+      const res = await api.post(`api/user/profile`, formData)
       dispatch({
         type:'UPDATE_PROFILE_DETAILS',
         payload:res.data

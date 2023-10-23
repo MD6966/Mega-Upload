@@ -91,6 +91,7 @@ const Documents = () => {
           ) : (
             <Grid container spacing={3}>
               {filteredData.map((val) => {
+                console.log(val)
                 const formattedDate = moment(val.created_at).format('MMMM D, YYYY');
                 return (
                   <Grid item xs={12} md={6} lg={4} key={val.id}>
