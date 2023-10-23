@@ -20,6 +20,7 @@ import ViewSingleDocument from "./views/User/MyUploads/components/Documents/comp
 import ViewSingleSoftware from "./views/User/MyUploads/components/Softwares/components/ViewSingleSoftware";
 import ProfilePage from "./views/User/ProfilePage";
 import CheckOut from "./views/User/CheckOut";
+import Dashboard from "./views/Admin/Dashboard";
 export default function Router() {
     const isAuthenticated = useSelector((state)=>state.auth.isAuthenticated)
     // console.log(isAuthenticated)
@@ -52,7 +53,17 @@ export default function Router() {
 
         ]
        },
-
+       {
+        element:<ProtectedRoutes isLogged={true} />,
+        children:[
+            {
+             path:'admin', element:<AdminDashboard />,
+             children:[
+                 {path:'dashboard', element: <Dashboard />}
+             ]
+            },
+        ]
+       },
 
     //    {
     //     path: 'admin',
@@ -70,10 +81,10 @@ export default function Router() {
     //     path:'/home',
     //     element: <Home />,
     //    },
-    //    {
-    //     path:'/admin-login',
-    //     element: <AdminLogin /> 
-    //    },
+       {
+        path:'/admin-login',
+        element: <AdminLogin /> 
+       },
        {
         path:'*',
         element: <ErrorPage /> 

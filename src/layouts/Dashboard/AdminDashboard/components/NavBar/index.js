@@ -2,7 +2,7 @@ import React,  { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { styled, alpha } from '@mui/material/styles';
 import { Box, Button, Drawer, Typography, Avatar, 
-    List, ListItem,ListItemButton, ListItemIcon,ListItemText } from '@mui/material';
+    List, ListItem,ListItemButton, ListItemIcon,ListItemText, Divider } from '@mui/material';
 import Scrollbar from '../../../../../components/scrollbar';
 import useResponsive from '../../../../../components/hooks/useResponsive';
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
@@ -88,11 +88,32 @@ const StyledAccount = styled('div')(({ theme }) => ({
       >
         <Box sx={{ px: 2.5, py: 3, display: 'inline-flex', }}>
         <Box sx={{display:'flex'}}>
-                        <img src='/assets/images/log.png' alt="logo" width="55px" />
-                        <Typography variant="h6" component="div" sx={{mt:1.5, fontSize:'1.5rem', fontWeight:'bold'}}>
-                            Architecture
-                        </Typography>
+                        <img src='/assets/images/logo.png' alt="logo" />
                         </Box>
+        </Box>
+        <Box sx={{display:'flex', justifyContent:'center'}}>
+            <Avatar
+            src="/assets/images/admin.png" 
+            sx={{
+              height:'100px',
+              width:'100px'
+            }}
+            />
+        </Box>
+        <Box>
+        <Typography sx={{
+                  fontFamily:'Bebas Neue', 
+                  textAlign:'center', 
+                  fontSize:'1.95rem', 
+                  color:'#fff',
+                  textShadow:'2px 2px 3px #e2e2e2',
+                }}>Syed Mudasser </Typography>
+                <Typography textAlign="center" sx={{color:'#fff'}}>
+                  (Admin)
+                </Typography>
+        </Box>
+        <Box sx={{mt:2}}>
+          <Divider sx={{borderColor:'#878787'}}/>
         </Box>
         <Box sx={{p:2}}>
         <List component="nav">
@@ -164,8 +185,9 @@ const StyledAccount = styled('div')(({ theme }) => ({
             PaperProps={{
               sx: {
                 width: NAV_WIDTH,
-                bgcolor: 'background.default',
+                bgcolor: '#000',
                 borderRightStyle: 'dashed',
+                borderColor:'#fff'
               },
             }}
           >

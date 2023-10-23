@@ -102,6 +102,13 @@ const NavBarLinks = () => {
             Sign Up
           </StyledSignUp>
             </Box>
+            <Button
+            component={Link}
+            to="/admin-login" 
+            variant='outlined' 
+            sx={{color:'#fff', borderColor:'#fff', ml:1}}>
+              Admin
+            </Button>
           </Box>
     </div>
   )

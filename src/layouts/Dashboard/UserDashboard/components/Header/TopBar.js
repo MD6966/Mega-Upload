@@ -21,6 +21,7 @@ import { makeStyles } from '@mui/styles';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import UserLocation from './components/UserLocation';
 import axios from 'axios';
+import InfoIcon from '@mui/icons-material/Info';
 const ListData = [
   {
     id: 1,
@@ -40,6 +41,11 @@ const ListData = [
     icon: <SettingsIcon />,
     to: "/user/profile",
   },
+  {
+    id:4,
+    title:"Account Info",
+    icon: <InfoIcon />
+  }
 ];
 
 const NAV_WIDTH = 280;
@@ -106,8 +112,11 @@ const TopBar = () => {
   React.useEffect(()=> {
       getLocationData()
   }, [])
-  const handleInfo = () => {
+  const handleProfile = () => {
     setAnchorEl(null)
+    navigate('/user/profile')
+  }
+  const handleInfo = () => {
     setOpen(true)
   }
     const handleAvatarClick =(event) => {
@@ -146,6 +155,9 @@ const TopBar = () => {
           })
     }
     const handleListItemClick = (event, index) => {
+      if (index === 4) {
+        handleInfo();
+      }
       setSelectedIndex(index);
       setOpenD(false);
     };
@@ -301,7 +313,7 @@ const TopBar = () => {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
+        <MenuItem onClick={handleProfile}>Profile</MenuItem>
         <MenuItem onClick={handleInfo}>My Info</MenuItem>
         <MenuItem onClick={handleSignOut}>Logout</MenuItem>
       </Menu>

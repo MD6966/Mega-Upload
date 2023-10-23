@@ -14,7 +14,8 @@ const HEADER_MOBILE = 54;
 const HEADER_DESKTOP = 62;
 
 const StyledRoot = styled(AppBar)(({theme})=> ({
-    ...bgBlur({color: theme.palette.background.default}),
+    background:'#000',
+    // ...bgBlur({color: '#000'}),
     [theme.breakpoints.up('lg')]: {
         width: `calc(100% - ${NAV_WIDTH + 1}px)`,
       },

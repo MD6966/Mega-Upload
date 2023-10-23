@@ -2,6 +2,7 @@ import React from 'react'
 import { Box, AppBar, Toolbar, styled, 
     Typography, Stack } from '@mui/material'
 import AdminLoginForm from './AdminLoginForm'
+import Page from '../../../components/page'
 const StyledRoot = styled('div')(({theme})=> ({
     // backgroundImage: Gradients.Custom,
     height:'100vh',
@@ -26,7 +27,7 @@ const StyledRoot = styled('div')(({theme})=> ({
    }))
 const AdminLogin = () => {
   return (
-    <div>
+    <Page title="Admin Login">
     <StyledAppBar>
    <StyledToolbar>
     <Typography>
@@ -43,7 +44,7 @@ const AdminLogin = () => {
            
      </Stack>
  </StyledRoot>
- </div>
+ </Page>
   )
 }
 

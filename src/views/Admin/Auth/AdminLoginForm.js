@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import { useSnackbar } from 'notistack';
 import { useDispatch, useSelector } from 'react-redux'
+import { adminLogin } from '../../../store/actions/adminActions'
 const StyledButton = styled(Button)(({theme})=> ({
     margin:'10px 0',
     background:theme.palette.primary.main,
@@ -14,7 +15,8 @@ const StyledButton = styled(Button)(({theme})=> ({
 }))
 const initialValues = {
     email:'',
-    password:''
+    password:'',
+    role:'admin'
 }
 const AdminLoginForm = () => {
     const handleChange = (e) => {
@@ -24,20 +26,30 @@ const AdminLoginForm = () => {
     const navigate = useNavigate()
     const { enqueueSnackbar } = useSnackbar();
     const [formValues, setFormValues] = React.useState(initialValues)
-    const [loading, setLoading] = React.useState(null)
+    const [loading, setLoading] = React.useState(false)
     const dispatch = useDispatch()
     const handleSubmit = (e) => {
-        // enqueueSnackbar('OK!', {
-        //     variant: 'success'
-        //   });
-        navigate('/admin')
+        dispatch(adminLogin(formValues)).then((res)=> {
+            if(res.status == 200) {
+                navigate('/admin/dashboard')
+            }
+        }).catch((err)=>{
+            console.log(err)
+            if(err.response.data.message == 'validation_error') {
+                const errorData = err.response.data.data;
+                const errorMessage = Object.values(errorData).map((errorArray)=> errorArray[0]).join(', ')
+                enqueueSnackbar(errorMessage, {
+                    variant: 'error',
+                });
+            }
+            else
+            enqueueSnackbar(err.response.data.message, {
+                variant:'error'
+            })
+        })
         // setLoading(true)
         e.preventDefault()
         // console.log(formValues)
-        // dispatch(adminLogin(formValues)).then((res)=> {
-        //     console.log(res)
-        //     setLoading(false)
-        // })
     }
     
   return (
