@@ -19,7 +19,8 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import CloudIcon from '@mui/icons-material/Cloud';
 import { makeStyles } from '@mui/styles';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-
+import UserLocation from './components/UserLocation';
+import axios from 'axios';
 const ListData = [
   {
     id: 1,
@@ -83,6 +84,7 @@ const TopBar = () => {
     const theme = useTheme()
     const classes = useStyles()
     const [openD, setOpenD] = React.useState(false)
+    const [openDialog, setOpen] = React.useState(false)
     const [selectedIndex, setSelectedIndex] = React.useState(1);
     const user = useSelector((state)=>state.auth.user)
     // console.log(user)
@@ -90,10 +92,24 @@ const TopBar = () => {
     const open = Boolean(anchorEl);
     const [openNotifications, setOpenNotifications] = useState(false);
     const notificationsRef = useRef(null);
+    const [data, setData] = React.useState([])
     const notifications = [
 
     ]
-
+    const getLocationData = async () => {
+      await axios.get('https://geolocation-db.com/json/f2e84010-e1e9-11ed-b2f8-6b70106be3c8').then((result) => {
+          setData(result.data)
+      }).catch((err) => {
+          console.log(err)
+      });
+  }
+  React.useEffect(()=> {
+      getLocationData()
+  }, [])
+  const handleInfo = () => {
+    setAnchorEl(null)
+    setOpen(true)
+  }
     const handleAvatarClick =(event) => {
         setAnchorEl(event.currentTarget);
     
@@ -286,7 +302,7 @@ const TopBar = () => {
         }}
       >
         <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
+        <MenuItem onClick={handleInfo}>My Info</MenuItem>
         <MenuItem onClick={handleSignOut}>Logout</MenuItem>
       </Menu>
       </StyledToolbar>
@@ -308,6 +324,7 @@ const TopBar = () => {
           {renderContent}
       </Drawer>
   </StyledRoot>
+  <UserLocation open={openDialog} close={() =>setOpen(false)} data={data} />
   </div>
   )
 }

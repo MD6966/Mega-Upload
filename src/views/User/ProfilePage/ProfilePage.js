@@ -4,6 +4,8 @@ import { Avatar, Box, Button, DialogActions, DialogContent, DialogTitle, Divider
 import { useSelector } from 'react-redux';
 import EditIcon from '@mui/icons-material/Edit';
 import EditProfileInfo from './components/EditProfileInfo';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import { Link } from 'react-router-dom';
 const StyledRoot = styled(Box)(({ theme }) => ({
   padding: theme.spacing(6),
   // [theme.breakpoints.down('sm')]: {
@@ -161,6 +163,15 @@ const ProfilePage = () => {
               </Grid>
             </DialogContent>
             <DialogActions>
+              <Button variant='contained' sx={{mt:3, mr:2}}
+              component={Link}
+              to="/user/checkout"
+              endIcon={
+                <AccountBalanceIcon />
+              }
+              >
+                CheckOut
+              </Button>
               <Button 
               onClick={()=>setOpen(true)}
               endIcon={

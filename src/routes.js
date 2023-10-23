@@ -19,6 +19,7 @@ import ViewSinglePicture from "./views/User/MyUploads/components/Pictures/compon
 import ViewSingleDocument from "./views/User/MyUploads/components/Documents/components/ViewSingleDocument";
 import ViewSingleSoftware from "./views/User/MyUploads/components/Softwares/components/ViewSingleSoftware";
 import ProfilePage from "./views/User/ProfilePage";
+import CheckOut from "./views/User/CheckOut";
 export default function Router() {
     const isAuthenticated = useSelector((state)=>state.auth.isAuthenticated)
     // console.log(isAuthenticated)
@@ -43,6 +44,8 @@ export default function Router() {
             {path:'view-document', element:<ViewSingleDocument />},
             {path:'view-software', element:<ViewSingleSoftware />},
             {path:'profile', element:<ProfilePage />},
+            {path:'checkout', element:<CheckOut />},
+
 
             ]
         },
