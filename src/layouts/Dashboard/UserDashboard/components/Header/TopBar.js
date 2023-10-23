@@ -140,9 +140,14 @@ const TopBar = () => {
           '& .simplebar-content': { height: 1, display: 'flex', flexDirection: 'column' },
         }}
       >
-        <Box sx={{ px: 2.5, py: 3, display: 'inline-flex', }}>
-        <Box sx={{display:'flex'}}>
-                        <img src={user.profile_image} alt="logo" />
+        <Box sx={{ px: 2.5, py: 3,  }}>
+        <Box sx={{display:'flex',justifyContent:'center'}}>
+                        <Avatar sx={{
+                          height:'70px',
+                          width:'70px',
+                        }} 
+                        src={user.profile_image}
+                        />
                         </Box>
         </Box>
         <Box sx={{p:2}}>
@@ -249,7 +254,7 @@ const TopBar = () => {
             </Badge>
           </IconButton>
           <Box sx={{display:'flex', alignItems:'center'}}>
-            <Avatar src="/assets/images/admin.png" sx={{cursor:'pointer',}} onClick={handleAvatarClick}/>
+            <Avatar src={user.profile_image} sx={{cursor:'pointer', height:'40px', width:'40px', mr:1}} onClick={handleAvatarClick}/>
             <Box>
             <Typography sx={{color:'#000',mb:-0.5, fontWeight:'bold'}}> {user.name}</Typography>
             </Box>
@@ -290,6 +295,7 @@ const TopBar = () => {
        PaperProps={{
         sx: {
           bgcolor: '#353B48',
+          width:'280px'
         },
       }}
       >

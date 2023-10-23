@@ -1,5 +1,5 @@
 import { Avatar, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, TextField } from '@mui/material'
-import React from 'react'
+import React, {useState} from 'react'
 import { useDispatch } from 'react-redux'
 import { editProfileDetails, updateAvatar } from '../../../../store/actions/profileActions'
 import { useSnackbar } from 'notistack'
@@ -15,6 +15,8 @@ const EditProfileInfo = (props) => {
     }
     const [formValues , setFormValues] = React.useState(initialValues)
     const [selectedFile, setSelectedFile] = React.useState(null)
+    const [imagePreview, setImagePreview] = useState(null);
+    const [loadingAv, setLoadingAv] = useState(false)
     const dispatch = useDispatch()
     const {enqueueSnackbar} = useSnackbar()
     const [loading, setLoading] = React.useState(false)
@@ -25,6 +27,10 @@ const EditProfileInfo = (props) => {
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         setSelectedFile(file);
+        if (file) {
+            const imageURL = URL.createObjectURL(file);
+            setImagePreview(imageURL);
+          }
     };
     const handleSubmit = (e) => {
         setLoading(true)
@@ -55,104 +61,110 @@ const EditProfileInfo = (props) => {
         props.close();
     }
     const handleAvatarUpload = () => {
+        setLoadingAv(true)
         const formData = new FormData()
         formData.append('file', selectedFile)
         formData.append('name',formValues.name)
         formData.append('email', formValues.email)
        dispatch(updateAvatar(formData)).then((result) => {
+        setLoadingAv(false)
         enqueueSnackbar(result.data.message, {
             variant:'success'
         })
         handleDialogClose()
        }).catch((err) => {
+        setLoadingAv(false)
         console.log(err)
        });
     }
   return (
     <div>
-      <Dialog fullWidth open={props.open} onClose={handleDialogClose}>
-            <form onSubmit={handleSubmit}>
-        <DialogTitle>
-            Update your information
-        </DialogTitle>
+    <Dialog fullWidth open={props.open} onClose={handleDialogClose}>
+      <form onSubmit={handleSubmit}>
+        <DialogTitle>Update your information</DialogTitle>
         <Divider />
         <DialogContent>
-            <Box sx={{mb:3}}>
+          <Box sx={{ mb: 3 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
+              <Avatar
+                sx={{ height: '130px', width: '130px' }}
+                src={imagePreview || user.profile_image}
+              ></Avatar>
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <input
+                type="file"
+                accept="image/*"
+                style={{ display: 'none' }}
+                id="avatar-file-input"
+                onChange={handleFileChange}
+              />
+              <label htmlFor="avatar-file-input">
+                <Button variant="outlined" component="span" sx={{mr:1}}>
+                  Choose file
+                </Button>
+              </label>
+              {selectedFile && (
+                <Button
+                  variant={loadingAv ? 'disabled' :'contained'}
+                  color="primary"
+                  onClick={handleAvatarUpload}
+                >
+                  {loadingAv ? 
+                  <HashLoader
+                  color="#353B48"
+                  loading={true}
+                  size={25}
+                  aria-label="Loading Spinner"
+                  data-testid="loader"
+                /> : 'Upload'
 
-            <Box sx={{display:'flex', justifyContent:'center', mb:2}}>
-            <Avatar sx={{ height: '130px', width: '130px', }}
-            src={user.profile_image}
-            onClick={handleFileChange}
-            >
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    style={{ display: 'none' }}
-                                    onChange={handleFileChange}
-                                    id="avatar-input"
-                                />
-                                <label htmlFor="avatar-input" style={{ width: '100%', height: '100%', cursor: 'pointer', display: 'block' }}>
-                                    <div
-                                        style={{
-                                            backgroundImage: selectedFile,
-                                            backgroundSize: 'cover',
-                                            width: '100%',
-                                            height: '100%',
-                                        }}
-                                    />
-                                </label>
-                            </Avatar>
-                            </Box>
-                            <Box sx={{display:'flex', justifyContent:'center'}}>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                component="span"
-                                disabled={!selectedFile}
-                                onClick={handleAvatarUpload}
-                                >
-                                Upload
-                            </Button>
-                                    </Box>
-                                </Box>
-
-                <TextField label="Name" fullWidth sx={{mb:2}}
-                name='name'
-                value={formValues.name}
-                type='text'
-                onChange={handleChange}
-                />
-                <TextField label="Email" fullWidth
-                name='email'
-                value={formValues.email}
-                type='email'
-                onChange={handleChange}
-                />
+                }
+                </Button>
+              )}
+            </Box>
+          </Box>
+          <TextField
+            label="Name"
+            fullWidth
+            sx={{ mb: 2 }}
+            name="name"
+            value={formValues.name}
+            type="text"
+            onChange={handleChange}
+          />
+          <TextField
+            label="Email"
+            fullWidth
+            name="email"
+            value={formValues.email}
+            type="email"
+            onChange={handleChange}
+          />
         </DialogContent>
         <DialogActions>
-            <Button onClick={handleDialogClose} variant='outlined'>
-                Cancel
+          <Button onClick={handleDialogClose} variant="outlined">
+            Cancel
+          </Button>
+          {loading ? (
+            <Button>
+              <HashLoader
+                color="#353B48"
+                loading={true}
+                size={25}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+              />
             </Button>
-            {
-                loading ?
-                <Button>
-                     <HashLoader
-            color="#353B48"
-            loading={true}
-            size={25}
-            aria-label="Loading Spinner"
-            data-testid="loader"
-          />                    
-                </Button> :
-            <Button variant='contained' type='submit'>
-                Update
+          ) : (
+            <Button variant={loadingAv ? 'disbaled' : 'contained'} type="submit">
+              Update
             </Button>
-            }
-
+          )}
         </DialogActions>
-            </form>
-      </Dialog>
-    </div>
+      </form>
+    </Dialog>
+  </div>
   )
 }
 
