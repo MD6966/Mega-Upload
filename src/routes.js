@@ -23,7 +23,8 @@ import CheckOut from "./views/User/CheckOut";
 import Dashboard from "./views/Admin/Dashboard";
 export default function Router() {
     const isAuthenticated = useSelector((state)=>state.auth.isAuthenticated)
-    // console.log(isAuthenticated)
+    const isAuthenticatedAdmin = useSelector((state)=>state.admin.isAuthenticatedAdmin)
+    // console.log(isAuthenticatedAdmin)
     let element = useRoutes([
     //     {
     //     path:'/',
@@ -54,7 +55,7 @@ export default function Router() {
         ]
        },
        {
-        element:<ProtectedRoutes isLogged={true} />,
+        element:<ProtectedRoutes isLogged={isAuthenticatedAdmin} />,
         children:[
             {
              path:'admin', element:<AdminDashboard />,

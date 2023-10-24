@@ -29,12 +29,15 @@ const AdminLoginForm = () => {
     const [loading, setLoading] = React.useState(false)
     const dispatch = useDispatch()
     const handleSubmit = (e) => {
+        setLoading(true)
         dispatch(adminLogin(formValues)).then((res)=> {
             if(res.status == 200) {
+                setLoading(false)
                 navigate('/admin/dashboard')
             }
         }).catch((err)=>{
-            console.log(err)
+            // console.log(err)
+            setLoading(false)
             if(err.response.data.message == 'validation_error') {
                 const errorData = err.response.data.data;
                 const errorMessage = Object.values(errorData).map((errorArray)=> errorArray[0]).join(', ')

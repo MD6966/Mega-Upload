@@ -1,22 +1,19 @@
 import React,  { useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { styled, alpha } from '@mui/material/styles';
 import { Box, Button, Drawer, Typography, Avatar, 
     List, ListItem,ListItemButton, ListItemIcon,ListItemText, Divider } from '@mui/material';
 import Scrollbar from '../../../../../components/scrollbar';
 import useResponsive from '../../../../../components/hooks/useResponsive';
-import LeaderboardIcon from '@mui/icons-material/Leaderboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import Inventory2Icon from '@mui/icons-material/Inventory2';
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import TimelineIcon from '@mui/icons-material/Timeline';
-import MessageIcon from '@mui/icons-material/Message';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { makeStyles } from '@mui/styles';
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import clsx from 'clsx'
-
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import { useDispatch } from 'react-redux';
+import { logOutAdmin } from '../../../../../store/actions/adminActions';
 const NAV_WIDTH = 280;
 const StyledAccount = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -50,18 +47,39 @@ const StyledAccount = styled('div')(({ theme }) => ({
           icon: <SettingsIcon />,
           // to: "/admin/new-invoices",
         },
-        {
-          id: 3,
-          title: "Signout",
-          icon: <ExitToAppIcon />,
-          // to: "/admin/approved-by-admin",
-        },
+        // {
+        //   id: 3,
+        //   title: "Signout",
+        //   icon: <ExitToAppIcon />,
+        //   to: "/admin/approved-by-admin",
+        // },
       ];
   const location = useLocation();
   const [dOpen, setDopen] = React.useState(false);
     const [selectedIndex, setSelectedIndex] = React.useState(1);
     const isDesktop = useResponsive('up', 'lg');
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const classes = useStyles()
+    const handleSignOut = () => {
+      confirmAlert({
+          title: 'Log Out',
+          message: 'Are you sure to log out ?',
+          buttons:[
+            {
+              label: 'Yes',
+              onClick: ()=>{
+                dispatch(logOutAdmin())
+                navigate('/',{ replace: true})
+              }
+            },
+           {
+            label: 'No',
+           }
+    
+          ]
+        })
+  }
     React.useEffect(() => {
         const matchingItem = ListData.find((item) => item.to === location.pathname);
         if (matchingItem) {
@@ -163,6 +181,21 @@ const StyledAccount = styled('div')(({ theme }) => ({
                   );
                 })}
               </List>
+              <Button variant='contained' fullWidth
+              onClick={handleSignOut}
+              endIcon={
+                <ExitToAppIcon />
+              } 
+              sx={{
+                mt:3, 
+                background:'#f7f7f7', 
+                color:'#000',
+                '&:hover' : {
+                  background:'#e2e2e2',
+                }
+                }}>
+                Log Out
+              </Button>
         </Box>  
         <Box sx={{ flexGrow: 1 }} />
 
@@ -187,7 +220,7 @@ const StyledAccount = styled('div')(({ theme }) => ({
                 width: NAV_WIDTH,
                 bgcolor: '#000',
                 borderRightStyle: 'dashed',
-                borderColor:'#fff'
+                borderColor:'#fff',
               },
             }}
           >

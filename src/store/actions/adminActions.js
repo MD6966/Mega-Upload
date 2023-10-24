@@ -25,3 +25,9 @@ export const adminLogin = ({ email, password, role }) => async (dispatch) => {
       throw err;
     }
   };
+
+  export const logOutAdmin = () => (dispatch) => {
+    dispatch({
+        type: 'LOGOUT_SUUCCESS_ADMIN'
+      });
+}

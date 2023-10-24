@@ -16,6 +16,15 @@ const adminReducer = (state=initialState, action) => {
                 admin:action.payload.data.user,
                 isAuthenticatedAdmin: true
             };
+            
+        };
+        case 'LOGOUT_SUUCCESS_ADMIN' : {
+            localStorage.removeItem('token')
+            return {
+                token: null,
+                isAuthenticated: false,
+                admin:null,
+              };
         };
         default :  return state
         
