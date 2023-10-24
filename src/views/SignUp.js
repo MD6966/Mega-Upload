@@ -66,12 +66,20 @@ const SignUp = () => {
     }).catch((err) => {
       setLoading(false)
       // console.log(err.response.data.data.email[0])
-      enqueueSnackbar(err.response.data.data.email[0], {
-        variant : "error"
-      })
+      if(err.response.data.message == 'validation_error') {
+        const errorData = err.response.data.data;
+        const errorMessage = Object.values(errorData).map((errorArray)=> errorArray[0]).join(', ')
+        enqueueSnackbar(errorMessage, {
+            variant: 'error',
+        });
+    }
+    else
+    enqueueSnackbar(err.response.data.message, {
+        variant:'error'
+    })
     });
     // navigate('/verify-otp')
-    console.log(formValues)
+    // console.log(formValues)
   }
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 

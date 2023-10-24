@@ -59,9 +59,17 @@ const Login = () => {
       // }
     }).catch((err) => {
       setLoading(false)
-      enqueueSnackbar(err.response.data.message, {
+      if(err.response.data.message == 'validation_error') {
+        const errorData = err.response.data.data;
+        const errorMessage = Object.values(errorData).map((errorArray)=> errorArray[0]).join(', ')
+        enqueueSnackbar(errorMessage, {
+            variant: 'error',
+        });
+    }
+    else
+    enqueueSnackbar(err.response.data.message, {
         variant:'error'
-      })
+    })
     });
     console.log(formValues)
   }
@@ -80,9 +88,17 @@ const Login = () => {
       setOpen(false)
     }).catch((err) => {
       setEmailLoading(false)
-      enqueueSnackbar(err.response.data.data.email[0], {
+      if(err.response.data.message == 'validation_error') {
+        const errorData = err.response.data.data;
+        const errorMessage = Object.values(errorData).map((errorArray)=> errorArray[0]).join(', ')
+        enqueueSnackbar(errorMessage, {
+            variant: 'error',
+        });
+    }
+    else
+    enqueueSnackbar(err.response.data.message, {
         variant:'error'
-      })
+    })
     });
   }
   const theme = useTheme()

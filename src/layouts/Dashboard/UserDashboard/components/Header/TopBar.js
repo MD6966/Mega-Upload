@@ -47,13 +47,9 @@ const ListData = [
     icon: <InfoIcon />
   }
 ];
-
 const NAV_WIDTH = 280;
-
 const HEADER_MOBILE = 54;
-
 const HEADER_DESKTOP = 62;
-
 const StyledRoot = styled(AppBar)(({theme})=> ({
     ...bgBlur({color: theme.palette.background.default}),
     [theme.breakpoints.up('md')]: {
@@ -118,6 +114,7 @@ const TopBar = () => {
   }
   const handleInfo = () => {
     setOpen(true)
+    setAnchorEl(null)
   }
     const handleAvatarClick =(event) => {
         setAnchorEl(event.currentTarget);

@@ -70,9 +70,17 @@ const OTP = () => {
       })
       .catch((err) => {
         setLoading(false);
-        enqueueSnackbar(err.response.data.message, {
-          variant: 'error',
-        });
+        if(err.response.data.message == 'validation_error') {
+          const errorData = err.response.data.data;
+          const errorMessage = Object.values(errorData).map((errorArray)=> errorArray[0]).join(', ')
+          enqueueSnackbar(errorMessage, {
+              variant: 'error',
+          });
+      }
+      else
+      enqueueSnackbar(err.response.data.message, {
+          variant:'error'
+      })
 
         setOTPValue('');
 
@@ -100,7 +108,17 @@ const OTP = () => {
           });
         })
         .catch((err) => {
-          console.log(err);
+          if(err.response.data.message == 'validation_error') {
+            const errorData = err.response.data.data;
+            const errorMessage = Object.values(errorData).map((errorArray)=> errorArray[0]).join(', ')
+            enqueueSnackbar(errorMessage, {
+                variant: 'error',
+            });
+        }
+        else
+        enqueueSnackbar(err.response.data.message, {
+            variant:'error'
+        })
         });
     } else {
       dispatch(updateResend(true, resendAttempts));

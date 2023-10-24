@@ -29,6 +29,7 @@ const AdminLoginForm = () => {
     const [loading, setLoading] = React.useState(false)
     const dispatch = useDispatch()
     const handleSubmit = (e) => {
+        e.preventDefault()
         setLoading(true)
         dispatch(adminLogin(formValues)).then((res)=> {
             if(res.status == 200) {
@@ -50,9 +51,6 @@ const AdminLoginForm = () => {
                 variant:'error'
             })
         })
-        // setLoading(true)
-        e.preventDefault()
-        // console.log(formValues)
     }
     
   return (

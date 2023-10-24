@@ -1,4 +1,4 @@
-import { Drawer, styled } from '@mui/material';
+import { Box, Drawer, styled, useTheme } from '@mui/material';
 import React from 'react'
 import TopBar from './components/Header/TopBar';
 import Nav from './components/NavBar';
@@ -26,11 +26,17 @@ const Main = styled('div')(({ theme }) => ({
 }));
 const AdminDashboard = () => {
   const [open, setOpen] = React.useState(false);
-
+  const theme = useTheme()
   return (
     <div>
        <StyledRoot>
-      {/* <TopBar  onOpenNav={() => setOpen(true)}  /> */}
+        <Box sx={{
+          [theme.breakpoints.up('lg')]: {
+            display:'none'
+          }
+        }}>
+      <TopBar  onOpenNav={() => setOpen(true)}  />
+        </Box>
       <Nav openNav={open} onCloseNav={() => setOpen(false)} />
       <Main>
         <Outlet />
