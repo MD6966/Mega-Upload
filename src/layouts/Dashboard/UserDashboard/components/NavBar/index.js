@@ -11,6 +11,8 @@ import CloudIcon from '@mui/icons-material/Cloud';
 import { makeStyles } from '@mui/styles';
 import clsx from 'clsx'
 import { useDispatch } from 'react-redux';
+import InsightsIcon from '@mui/icons-material/Insights';
+import { BiMoneyWithdraw } from 'react-icons/bi';
 const NAV_WIDTH = 280;
 const StyledAccount = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -46,8 +48,21 @@ const StyledAccount = styled('div')(({ theme }) => ({
             icon: <CloudIcon />,
             to: "/user/uploads",
           },
+          {
+            id:3,
+            title:'Statistics',
+            icon: <InsightsIcon />,
+            to:"/user/stats"
+
+          },
+          {
+            id:4,
+            title:'Withdrawl',
+            icon: <BiMoneyWithdraw />,
+            to:'/user/checkout'
+          },
         {
-          id: 3,
+          id: 5,
           title: "Settings",
           icon: <SettingsIcon />,
           to: "/user/profile",

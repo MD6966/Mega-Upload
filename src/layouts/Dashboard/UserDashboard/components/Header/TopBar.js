@@ -132,7 +132,7 @@ const TopBar = () => {
         setOpenNotifications(false);
       };
       const handleSignOut = () => {
-        setOpenD(false)
+        setAnchorEl(null)
         confirmAlert({
             title: 'Log Out',
             message: 'Are you sure to log out ?',
@@ -311,7 +311,7 @@ const TopBar = () => {
         }}
       >
         <MenuItem onClick={handleProfile}>Profile</MenuItem>
-        <MenuItem onClick={handleInfo}>My Info</MenuItem>
+        {/* <MenuItem onClick={handleInfo}>My Info</MenuItem> */}
         <MenuItem onClick={handleSignOut}>Logout</MenuItem>
       </Menu>
       </StyledToolbar>

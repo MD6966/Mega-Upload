@@ -21,6 +21,7 @@ import ViewSingleSoftware from "./views/User/MyUploads/components/Softwares/comp
 import ProfilePage from "./views/User/ProfilePage";
 import CheckOut from "./views/User/CheckOut";
 import Dashboard from "./views/Admin/Dashboard";
+import Statistics from "./views/User/Statistics";
 export default function Router() {
     const isAuthenticated = useSelector((state)=>state.auth.isAuthenticated)
     const isAuthenticatedAdmin = useSelector((state)=>state.admin.isAuthenticatedAdmin)
@@ -47,6 +48,8 @@ export default function Router() {
             {path:'view-software', element:<ViewSingleSoftware />},
             {path:'profile', element:<ProfilePage />},
             {path:'checkout', element:<CheckOut />},
+            {path:'stats', element:<Statistics />},
+
 
 
             ]
