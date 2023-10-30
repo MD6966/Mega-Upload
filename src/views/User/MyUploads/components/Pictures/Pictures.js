@@ -10,7 +10,7 @@ import moment from 'moment';
 import { HashLoader } from 'react-spinners';
 import { Search, Visibility, VisibilityOff } from '@mui/icons-material';
 import { Link, useNavigate } from 'react-router-dom';
-
+import './styles.css'
 const Pictures = () => {
   const dispatch = useDispatch();
   const [data, setData] = React.useState([]);
@@ -18,6 +18,7 @@ const Pictures = () => {
   const [loading, setLoading] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState('');
   const [noDataFound, setNoDataFound] = React.useState(false); 
+  const [overStates, setOverStates] = React.useState(data.map(() => false));
   const navigate = useNavigate()
 
   const getPics = () => {
@@ -98,20 +99,31 @@ const Pictures = () => {
             </Typography>
           ) : (
             <Grid container spacing={3}>
-              {filteredData.map((val) => {
+              {filteredData.map((val, index) => {
                 // console.log(val)
                 const formattedDate = moment(val.created_at).format('MMMM D, YYYY');
                 return (
                   <Grid item xs={12} md={6} lg={4} key={val.id}>
                     <Card>
                       <CardActionArea>
-                        <CardMedia
-                          component="img"
-                          height="140"
-                          image={val.path}
-                          alt="green iguana"
-                          onClick={() =>handleImageClick(val)}
-                        />
+                      <CardMedia
+                    onMouseOver={() => {
+                      const updatedOverStates = [...overStates];
+                      updatedOverStates[index] = true;
+                      setOverStates(updatedOverStates);
+                    }}
+                    onMouseOut={() => {
+                      const updatedOverStates = [...overStates];
+                      updatedOverStates[index] = false;
+                      setOverStates(updatedOverStates);
+                    }}
+                    component="img"
+                    height="140"
+                    image={overStates[index] ? val.path : "/assets/images/file-upload.png"}
+                    alt="green iguana"
+                    className={overStates[index] ? 'blur-on-hover' : ''}
+                    onClick={() => handleImageClick(val)}
+                  />
                         <CardContent>
                           <Typography gutterBottom variant="h6" component="div">
                             {val.name}

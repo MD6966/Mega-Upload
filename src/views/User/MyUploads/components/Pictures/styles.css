@@ -1,0 +1,4 @@
+.blur-on-hover {
+    filter: blur(5px); 
+    transition: filter 0s ease; 
+  }
