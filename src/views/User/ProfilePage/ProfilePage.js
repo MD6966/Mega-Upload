@@ -102,14 +102,14 @@ const ProfilePage = () => {
                 </Grid>
                 <Grid item xs={6} md={4} lg={4}>
                 <Typography fontWeight="bold" variant='h6'>
-                    Role
+                    Phone
                   </Typography>
                   <Typography sx={{
                     mt:1,
                     fontWeight:'bold',
                     color:'#5e5e5e'
                   }}>
-                    {user.roles[0].name}
+                    -&nbsp;-&nbsp;-&nbsp;-&nbsp;-&nbsp;-
                   </Typography>
                 </Grid>
               </Grid>

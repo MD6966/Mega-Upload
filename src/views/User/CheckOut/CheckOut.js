@@ -84,23 +84,14 @@ class CheckOut extends Component {
               <div ref={(ref) => (this.paypal = ref)}></div>
             </Box>
             <Box sx={{ width: '100%', ml: 2 }}>
-              <TextField fullWidth label="Your Name" sx={{mb:2}}/>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Select Bank</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={age}
-                  label="Select Bank"
-                  onChange={this.handleChange} 
-                >
-                  <MenuItem value={10}>ABC</MenuItem>
-                  <MenuItem value={20}>Super Bank</MenuItem>
-                  <MenuItem value={30}>Test Bank</MenuItem>
-                </Select>
-              </FormControl>
-              <TextField fullWidth label="Account Number" sx={{mt:2}}/>
-              <TextField fullWidth label="Routing Number" sx={{mt:2, mb:2}}/>
+              <TextField fullWidth label="Full Name" sx={{mb:2}}/>
+              <TextField fullWidth label="Home Address" sx={{mb:2}}/>
+              <TextField fullWidth label="Postal Code" sx={{mb:2}}/>
+              <TextField fullWidth label="Account Number" sx={{mb:2}}
+              placeholder='Account Number and Routing Number'
+              />
+              <TextField fullWidth label="Bank Name" sx={{mb:2}}/>
+              <TextField fullWidth label="issuing Country" sx={{mb:2}}/>
                 <Button variant='contained' fullWidth sx={{height:'40px'}}>
                     Pay Now
                 </Button>

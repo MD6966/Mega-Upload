@@ -125,13 +125,22 @@ const EditProfileInfo = (props) => {
             </Box>
           </Box>
           <TextField
-            label="Name"
+            label="User Name"
             fullWidth
             sx={{ mb: 2 }}
             name="name"
             value={formValues.name}
             type="text"
             onChange={handleChange}
+          />
+           <TextField
+            label="Phone number"
+            fullWidth
+            sx={{ mb: 2 }}
+            // name="name"
+            // value={formValues.name}
+            // type="text"
+            // onChange={handleChange}
           />
           <TextField
             label="Email"

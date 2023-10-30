@@ -18,7 +18,7 @@ import { uploadPicture } from '../../../store/actions/uploadActions';
 import { useSnackbar } from 'notistack';
 import LinearProgress from '@mui/material/LinearProgress';
 import axios from 'axios';
-import { Box } from '@mui/material';
+import { Box, Divider, TextField } from '@mui/material';
 import { useNavigate } from 'react-router';
 
 const api = axios.create({
@@ -42,6 +42,10 @@ api.interceptors.request.use(
   }
 );
 
+const initialValues = {
+  name:'',
+  desc:''
+}
 const UploadFile = () => {
   const user = useSelector((state) => state.auth.user);
   const [selectedOption, setSelectedOption] = useState('');
@@ -49,10 +53,19 @@ const UploadFile = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const [loading, setLoading] = React.useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [uploadDialog, setUploadDialog] = useState(false)
+  const [formValues, setFormValues] = useState(initialValues)
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const fileInputRef = useRef(null);
 
+  const handleInputChange = (e) => {
+    const {name, value} = e.target
+    setFormValues({
+      ...formValues,
+      [name] : value
+    })
+  }
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
@@ -63,6 +76,7 @@ const UploadFile = () => {
     if (selectedFile) {
       setSelectedFile(selectedFile);
       handleDialogClose();
+      setUploadDialog(true)
     } else {
       setSelectedFile(null);
     }
@@ -83,9 +97,10 @@ const UploadFile = () => {
 
   const handleUpload = () => {
     const formData = new FormData();
-    formData.append('name', selectedFile.name);
+    formData.append('name', formValues.name);
     formData.append('file', selectedFile);
     formData.append('user_id', user.id);
+    formData.append('description', formValues.desc)
     let endpoint;
     switch (selectedOption) {
       case 'picture':
@@ -140,6 +155,10 @@ const UploadFile = () => {
     setDialogOpen(false);
   };
 
+  const handleNameSave = (e) => {
+    e.preventDefault()
+    setUploadDialog(false)
+  }
   return (
     <Page title="Upload File">
       <Card>
@@ -175,7 +194,7 @@ const UploadFile = () => {
                     Click anywhere to upload {selectedOption}
                   </Typography>
                   <Typography variant="subtitle1" sx={{ mt: 2 }}>
-                    {selectedFile ? selectedFile.name : 'No file chosen'}
+                    {selectedFile ? formValues.name : 'No file chosen'}
                   </Typography>
                   {loading ? (
                     <Box sx={{ width: '50%', mr: 1 }}>
@@ -236,6 +255,32 @@ const UploadFile = () => {
               </DialogActions>
             </Dialog>
           </div>
+          <Dialog open={uploadDialog} fullWidth>
+            <form onSubmit={handleNameSave}>
+                <DialogTitle>
+                  Enter Details 
+                  </DialogTitle>
+                  <Divider />
+                  <DialogContent>
+                    <TextField label="Name" fullWidth sx={{mb:2}}
+                    name="name"
+                    value={formValues.name}
+                    onChange={handleInputChange}
+                    required
+                    />
+                    <TextField label="Description" fullWidth multiline rows={4}
+                    name="desc"
+                    value={formValues.desc}
+                    onChange={handleInputChange}
+                    />
+                    </DialogContent> 
+                    <DialogActions>
+                      <Button variant='contained' type='submit'>
+                        Save 
+                      </Button>
+                    </DialogActions>
+                    </form>
+          </Dialog>
         </CardContent>
       </Card>
     </Page>
