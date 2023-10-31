@@ -58,7 +58,7 @@ const StyledAccount = styled('div')(({ theme }) => ({
           {
             id:4,
             title:'Withdrawl',
-            icon: <BiMoneyWithdraw />,
+            icon: <BiMoneyWithdraw size={20}/>,
             to:'/user/checkout'
           },
         {
